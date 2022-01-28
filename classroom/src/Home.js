@@ -1,8 +1,9 @@
-import React from 'react';
-import { useUserAuth } from './context/UserAuthContext';
+import React, { useState, useContext } from 'react';
+import UserAuthContext from './context/user/UserAuthContext';
 
 const Home = () => {
-  const ctx = useUserAuth();
+  const ctx = useContext(UserAuthContext);
+
   const logoutHandler = async () => {
     try {
       await ctx.LogOut();
