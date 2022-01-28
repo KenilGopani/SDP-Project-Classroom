@@ -1,21 +1,31 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import {Link} from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext";
+import React, { useState, useContext } from 'react';
+import { useNavigate, Link } from "react-router-dom";
+import  UserAuthContext  from "../../context/user/UserAuthContext";
+
 
 export default function SignUp() {
 
+    const ctx = useContext(UserAuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const ctx = useUserAuth();
     const navigate = useNavigate();
     
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError("");
         try{
-            await ctx.SignUp(email, password);
+            const currentUser = await ctx.SignUp(email, password);
+            // console.log("++");
+            // console.log(currentUser.user.email);
+            const response = await fetch("http://localhost:4099/api/auth/createUser",
+            {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({ UID : currentUser.user.uid, name : currentUser.user.email , email: currentUser.user.email})
+            });
             navigate("/");
         }
         catch(err){

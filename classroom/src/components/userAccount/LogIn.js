@@ -1,24 +1,26 @@
-import { async } from '@firebase/util';
-import React,{ useState } from 'react'
+// import { async } from '@firebase/util';
+import React,{ useState, useContext } from 'react'
 import GoogleButton from 'react-google-button';
 import { Link, useNavigate } from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { auth } from '../../firebase';
+import  UserAuthContext  from "../../context/user/UserAuthContext";
 
 
 export default function LogIn() {
+    
+    const ctx = useContext(UserAuthContext);
 
     const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const ctx = useUserAuth();
     const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError("");
         try {
-            setEmail("test@gmail.com");
-            setPassword("test123");
+            // setEmail("test@gmail.com");
+            // setPassword("test123");
             const temp = await ctx.LogIn(email,password);
             console.log(temp);
             navigate('/home');
@@ -30,7 +32,13 @@ export default function LogIn() {
     const handleGoogleSign = async (event) => {
         event.preventDefault();
         try {
-            await ctx.googleSignIn();
+            const temp = await ctx.googleSignIn()
+           
+            console.log(temp);
+            // console.log(temp.UserImpl.accessToken);
+
+            
+            // const json = await response.json();
             navigate('/home');
         } catch (err) {
             console.log(err.message);
