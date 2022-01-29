@@ -1,7 +1,23 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext} from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import UserAuthContext from '../../context/user/UserAuthContext';
 
 export default function Navbar() {
+
+    const ctx = useContext(UserAuthContext);
+    const navigate = useNavigate();
+
+    const logoutHandler = async () => {
+        try {
+          await ctx.LogOut();
+          console.log('logout');
+          ctx.setUser({});
+          navigate('/');
+        } catch (err) {
+          console.log(err.message);
+        }
+      }
+
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{"backgroundColor" : "#e3f2fd"}}>
@@ -33,10 +49,11 @@ export default function Navbar() {
                                 <a className="nav-link disabled">Disabled</a>
                             </li> */}
                         </ul>
-                        <form className="d-flex">
+                        {/* <form className="d-flex"> */}
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                                <button className="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+                                {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
+                                <button onClick={logoutHandler}> LogOut</button>
+                        {/* </form> */}
                     </div>
                 </div>
             </nav>

@@ -45,7 +45,7 @@ const UserAuthProvider = (props) => {
     }, [])
 
     return (
-        <UserAuthContext.Provider value={{user,SignUp,LogIn,LogOut,googleSignIn}}>
+        <UserAuthContext.Provider value={{user,setUser,SignUp,LogIn,LogOut,googleSignIn}}>
             {props.children}
         </UserAuthContext.Provider>
         )

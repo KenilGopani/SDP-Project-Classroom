@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import  UserAuthContext  from "../../context/user/UserAuthContext";
+import UserAuthContext from "../../context/user/UserAuthContext";
 
 
 export default function SignUp() {
@@ -10,25 +10,25 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError("");
-        try{
+        try {
             const currentUser = await ctx.SignUp(email, password);
             // console.log("++");
             // console.log(currentUser.user.email);
             const response = await fetch("http://localhost:4099/api/auth/createUser",
-            {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/json'
-                },
-                body: JSON.stringify({ UID : currentUser.user.uid, name : currentUser.user.email , email: currentUser.user.email})
-            });
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ UID: currentUser.user.uid, name: currentUser.user.email, email: currentUser.user.email })
+                });
             navigate("/");
         }
-        catch(err){
+        catch (err) {
             setError(err.message);
             console.log(err.message);
         }
