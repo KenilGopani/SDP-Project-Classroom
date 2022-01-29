@@ -4,17 +4,13 @@ const router = express.Router()
 
 
 router.post('/createUser', (req, res) => {
-    // res.send("Authentication..")
-    // const user = User(req.body)
-    // user.save() 
-    // User.create({
-    //     name : req.body.name,
-    //     email : req.body.email,
-    // })
-    console.log(req.body)
+    User.create({
+        UID : req.body.UID,
+        name : req.body.name,
+        email : req.body.email,
+    }).then((user) => res.json(user))
+    .catch((err) => console.log(err))
     // res.send(req.body)
-}
-
-)
+})
 
 module.exports = router

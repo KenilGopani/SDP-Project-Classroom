@@ -1,12 +1,12 @@
 // import { async } from '@firebase/util';
-import React,{ useState, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import GoogleButton from 'react-google-button';
 import { Link, useNavigate } from "react-router-dom";
-import  UserAuthContext  from "../../context/user/UserAuthContext";
+import UserAuthContext from "../../context/user/UserAuthContext";
 
 
 export default function LogIn() {
-    
+
     const ctx = useContext(UserAuthContext);
 
     const [email, setEmail] = useState("");
@@ -21,9 +21,12 @@ export default function LogIn() {
         try {
             // setEmail("test@gmail.com");
             // setPassword("test123");
-            const temp = await ctx.LogIn(email,password);
-            console.log(temp);
-            navigate('/home');
+            // if (email != "" && password != "") {
+                const temp = await ctx.LogIn(email, password);
+                console.log(temp);
+                // console.log("actual")
+                navigate('/home');
+            // }
         } catch (err) {
             setError(err.message);
             console.log(err.message);
@@ -33,11 +36,11 @@ export default function LogIn() {
         event.preventDefault();
         try {
             const temp = await ctx.googleSignIn()
-           
+
             console.log(temp);
             // console.log(temp.UserImpl.accessToken);
 
-            
+
             // const json = await response.json();
             navigate('/home');
         } catch (err) {
@@ -62,7 +65,7 @@ export default function LogIn() {
                     </div>
                     <hr />
                     <div>
-                        <GoogleButton onClick={handleGoogleSign} style={{'margin':'auto'}}/>
+                        <GoogleButton onClick={handleGoogleSign} style={{ 'margin': 'auto' }} />
                     </div>
                 </form>
             </div>
