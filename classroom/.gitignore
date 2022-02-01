@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules
+emailPassword.js
 /.pnp
 .pnp.js
 

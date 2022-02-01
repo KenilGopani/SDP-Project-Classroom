@@ -1,6 +1,8 @@
 const Classroom = require('../models/Classroom')
 const User = require('../models/User')
 const express = require('express')
+const nodemailer = require('nodemailer')
+const credential = require('../emailPassword')
 const router = express.Router()
 
 const generate_classCode = () => {
@@ -12,6 +14,31 @@ const generate_classCode = () => {
     }
     return classCode;
 }
+const sendMail = (list,className,classCode) => {
+    const mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: credential.user,
+            pass: credential.pass,
+        }
+    });
+    var details = {
+        from: credential.user,
+        to: credential.user,
+        bcc: list,
+        subject: 'Classroom code',
+            /* Adding HTML and Text Version, so the email will not land up in the Spam folder */
+            html: `Hello ! <br><br>Your ${className} classroom code is ${classCode}<br><br>Thanks,<br>KlassRoom team<br>`,
+            text: `Hello ! <br><br>Your ${className} classroom code is ${classCode}<br><br>Thanks,<br>KlassRoom team<br>`,
+        };
+    mailTransporter.sendMail(details,err => {
+        if(err)
+            console.log("krish: error in sending mail",err);
+        else
+            console.log('krish: mail sent succesfully');    
+        
+    })
+}
 
 router.put('/createClassroom', async (req, res) => {
 
@@ -21,7 +48,6 @@ router.put('/createClassroom', async (req, res) => {
         // console.log("+++++")
         // console.log(user._id)
         // console.log(req.body.owner)
-
         let classroom = await Classroom.create({
             className: req.body.className,
             description: req.body.description,
@@ -31,10 +57,16 @@ router.put('/createClassroom', async (req, res) => {
         })
         // .then((classroom) => res.json(classroom))
         //     .catch((err) => console.log(err.message))
-        console.log(classroom._id)
-        await User.findOneAndUpdate({ _id: user._id}, {$push: {classrooms: classroom._id}}).then((r) => console.log())
-        .catch((err) => console.log(err.message))
+        // console.log(classroom._id)
+        // await User.findOneAndUpdate({ _id: user._id}, {$push: {classrooms: classroom._id}}).then((r) => console.log())
+        // .catch((err) => console.log(err.message))
 
+        /********************Email *************************/
+        let listOfEmail = req.body.emailList;
+        listOfEmail = listOfEmail.toString();
+        console.log(listOfEmail);
+        sendMail(listOfEmail,classroom.className,classroom.classCode);
+        /************************************************* */
         res.json({ success: true, classroom});
     }
     catch(error){
@@ -60,6 +92,10 @@ router.get('/fetchAllClassrooms', async (req, res)=> {
         // res.status(500).send(error);
     }
 
+})
+
+router.get('/sendMail', async (req, res)=> {
+    
 })
 
 module.exports = router
