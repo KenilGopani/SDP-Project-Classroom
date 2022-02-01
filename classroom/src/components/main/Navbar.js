@@ -17,6 +17,19 @@ export default function Navbar() {
           console.log(err.message);
         }
       }
+    const sendEmail = async () => {
+        try {
+            const response = await fetch("http://localhost:4099/api/classroom/sendMail",
+              {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+          } catch (err) {
+            console.log(err)
+          }
+      }
 
     return (
         <>
@@ -53,6 +66,7 @@ export default function Navbar() {
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                                 {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
                                 <button onClick={logoutHandler}> LogOut</button>
+                                <button onClick={sendEmail}> Send</button>
                         {/* </form> */}
                     </div>
                 </div>
