@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import UserAuthContext from "../../context/user/UserAuthContext";
 import Navbar from "../main/Navbar";
 
@@ -11,17 +11,17 @@ const CreateClass = () => {
   const [list, setList] = useState([]);
 
   const emailListHandler = () => {
-    if (email.length > 0)
-    {
+    if (email.length > 0) {
       setList((prevState) => [...prevState, email]);
       const ul = document.getElementById('emailList');
       var li = document.createElement('li');
       li.innerHTML = email;
-      li.setAttribute('class','list-group-item');
+      li.setAttribute('class', 'list-group-item');
       ul.appendChild(li);
     }
     setEmail("");
   };
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     // console.log(className);
@@ -84,36 +84,36 @@ const CreateClass = () => {
                   onChange={(event) => setclassDescription(event.target.value)}
                 />
               </div>
-              <div className="container">
-                <div className="row">
-                  <div className="col-7">
-                    <div className="form-group m-5">
-                      <label className="form-label">
-                        Send classroom code via mail :
-                      </label>
-                      <input
-                        name="className"
-                        type="email"
-                        className="form-control"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                      />
-                      <button
-                        className="btn btn-primary"
-                        type="button"
-                        onClick={emailListHandler}
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-5">
-                    <ul class="list-group h-75 overflow-auto" id="emailList">                    
-                    </ul>
+              {/* <div className="container"> */}
+              <div className="row">
+                <div className="col-7">
+                  <div className="form-group m-5">
+                    <label className="form-label">
+                      Send classroom code via mail :
+                    </label>
+                    <input
+                      name="className"
+                      type="email"
+                      className="form-control"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                    />
+                    <button
+                      className="btn btn-primary mt-2"
+                      type="button"
+                      onClick={emailListHandler}
+                    >
+                      Add
+                    </button>
                   </div>
                 </div>
+                <div className="col-5">
+                  <ul class="list-group h-75 overflow-auto" id="emailList">
+                  </ul>
+                </div>
               </div>
-              <div className="col-12 m-5">
+              {/* </div> */}
+              <div className="col-12 ml-2">
                 <button className="btn btn-primary" type="submit">
                   Create Class
                 </button>

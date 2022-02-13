@@ -12,5 +12,4 @@ router.post('/createUser', (req, res) => {
     .catch((err) => console.log(err))
     // res.send(req.body)
 })
-
 module.exports = router
