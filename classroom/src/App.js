@@ -1,11 +1,12 @@
 import React from 'react';
 import { Routes, Route} from "react-router-dom";
 import UserAuthProvider from "./context/user/UserAuthProvider";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+// import ProtectedRoutes from "./components/ProtectedRoutes";
 import LogIn from "./components/userAccount/LogIn";
 import SignUp from "./components/userAccount/SignUp";
 import Home from "./components/main/Home";
 import CreateClass from './components/class/CreateClass';
+import JoinClass from './components/class/JoinClass';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         {/* <Route path="/home" element = {<ProtectedRoutes><Home/></ProtectedRoutes>}/> */}
         <Route exact path="/home" element={<Home/>} />
         <Route exact path="/createClass" element={<CreateClass/>} />
-
+        <Route exact path="/joinClass" element={<JoinClass/>} />
       </Routes>
       </UserAuthProvider>
   );

@@ -9,26 +9,23 @@ export default function LogIn() {
 
     const ctx = useContext(UserAuthContext);
 
+    // const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    // const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setError("");
+        // setError("");
         try {
-            // setEmail("test@gmail.com");
-            // setPassword("test123");
-            // if (email != "" && password != "") {
                 const temp = await ctx.LogIn(email, password);
                 console.log(temp);
-                // console.log("actual")
                 navigate('/home');
-            // }
-        } catch (err) {
-            setError(err.message);
+        }
+         catch (err) {
+            // setError(err.message);
+            alert(err.message);
             console.log(err.message);
         }
     }
@@ -36,11 +33,8 @@ export default function LogIn() {
         event.preventDefault();
         try {
             const temp = await ctx.googleSignIn()
-
             console.log(temp);
             // console.log(temp.UserImpl.accessToken);
-
-
             // const json = await response.json();
             navigate('/home');
         } catch (err) {
@@ -48,9 +42,8 @@ export default function LogIn() {
         }
     }
     return (
-        <div>
+        <>
             <div className="acontainer">
-                {/* <div>hi</div> */}
                 <form className="form" method="post" onSubmit={handleSubmit} >
                     <h1>Log In</h1>
                     <h5 style={{ color: 'red', textAlign: 'center' }}>{ }</h5>
@@ -69,6 +62,6 @@ export default function LogIn() {
                     </div>
                 </form>
             </div>
-        </div>
+        </>
     )
 }

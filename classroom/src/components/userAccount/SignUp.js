@@ -8,12 +8,12 @@ export default function SignUp() {
     const ctx = useContext(UserAuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    // const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setError("");
+        // setError("");
         try {
             const currentUser = await ctx.SignUp(email, password);
             // console.log("++");
@@ -29,25 +29,23 @@ export default function SignUp() {
             navigate("/");
         }
         catch (err) {
-            setError(err.message);
-            console.log(err.message);
+            // setError(err.message);
+            alert(err.message);
+            // console.log(err.message);
         }
     }
 
     return (
-        <div>
+        <>
             <div className="acontainer">
-                <form className="form" method="post" onSubmit={handleSubmit}>
+                <form className="form d-flex flex-column align-items-center" method="post" onSubmit={handleSubmit}>
                     <h1>Sign Up</h1>
-                    {/* {error &&  <Alert varient="danger">{error}</Alert> } */}
                     <input type="email" id="email" name="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" required />
-                    <input type="password" id="password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Password" required />
-                    <input type="submit" value="Sign Up" className="btn-small" />
-                    <div className="link">
-                        Already have an account ? &nbsp;<Link to="/">Log in</Link>
-                    </div>
+                    <input type="password" id="password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Password" required />                
+                    <div>Already have an account ? &nbsp;<Link to="/">Log in</Link></div>
+                    <input type="submit" value="Sign Up" className="btn-small m-4" />
                 </form>
             </div>
-        </div>
+        </>
     );
 }

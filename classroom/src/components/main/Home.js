@@ -47,7 +47,7 @@ export default function Home() {
                             <div className={"col-lg-4 col-md-6 col-12"} key={classroom._id}>
                                 <ClassCard
                                     roomName={classroom.className}
-                                    ownerName={classroom.owner}
+                                    ownerName={classroom.owner.name}
                                     imgUrl={"../../img.jpg"}
                                 />
                             </div>
