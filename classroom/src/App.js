@@ -5,6 +5,7 @@ import UserAuthProvider from "./context/user/UserAuthProvider";
 import LogIn from "./components/userAccount/LogIn";
 import SignUp from "./components/userAccount/SignUp";
 import Home from "./components/main/Home";
+import Classroom from './components/Classroom/Classroom.js'
 import CreateClass from './components/class/CreateClass';
 import JoinClass from './components/class/JoinClass';
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signUp" element={<SignUp/>} />
         {/* <Route path="/home" element = {<ProtectedRoutes><Home/></ProtectedRoutes>}/> */}
         <Route exact path="/home" element={<Home/>} />
+        <Route exact path="/home/classroom" element={<Classroom/>} />
         <Route exact path="/createClass" element={<CreateClass/>} />
         <Route exact path="/joinClass" element={<JoinClass/>} />
       </Routes>

@@ -2,7 +2,7 @@ import React from "react";
 
 const ClassCard = (props) => {
   return (
-    <div>
+    <div onClick={() => { props.onClick(); }}>
       <div className={`card card shadow p-3 m-1 bg-body rounded`} style={{height:'300px',minWidth:'300px'}} onClick={null}>
         <div className="container rounded bg-primary text-white">
           <div className="row align-items-center" >

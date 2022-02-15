@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserAuthContext from "../../context/user/UserAuthContext";
 import Navbar from "../main/Navbar";
 
 const CreateClass = () => {
   const { user } = useContext(UserAuthContext);
+  const navigate = useNavigate();
   const [className, setclassName] = useState("");
   const [error, setError] = useState("");
   const [classDescription, setclassDescription] = useState("");
@@ -48,6 +50,7 @@ const CreateClass = () => {
       setError(err);
       console.log(err);
     }
+    navigate('/home');
   };
   return (
     <>

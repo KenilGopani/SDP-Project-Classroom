@@ -51,7 +51,7 @@ router.put('/createClassroom', async (req, res) => {
         // console.log(user._id)
         // console.log(req.body.owner)
         var classId = null;
-        let classroom = await Classroom.create({
+        await Classroom.create({
             className: req.body.className,
             description: req.body.description,
             classCode: generate_classCode(),
@@ -71,12 +71,12 @@ router.put('/createClassroom', async (req, res) => {
         let listOfEmail = req.body.emailList;
         listOfEmail = listOfEmail.toString();
         console.log(listOfEmail);
-        sendMail(listOfEmail, classroom.className, classroom.classCode);
+        sendMail(listOfEmail, className, classCode);
         /************************************************* */
         res.json({ success: true, classroom });
     }
     catch (error) {
-        // console.log(error)
+        console.log(error)
         res.status(500).send("Internal Server Error");
     }
 

@@ -2,10 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import ClassCard from './ClassCard';
 import Navbar from './Navbar';
 import UserAuthContext from '../../context/user/UserAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
-
+    const navigate = useNavigate();
     const { user } = useContext(UserAuthContext);
     const [classrooms, setClassrooms] = useState({});
     const fetchAllGroups = async () => {
@@ -30,7 +31,9 @@ export default function Home() {
         console.log(classrooms)
         // eslint-disable-next-line
     },[]);
-
+    const classroomClickHandler = () => {
+        navigate('/home/classroom');
+    }
     return (
         <>
             <Navbar />
@@ -49,6 +52,7 @@ export default function Home() {
                                     roomName={classroom.className}
                                     ownerName={classroom.owner.name}
                                     imgUrl={"../../img.jpg"}
+                                    onClick={classroomClickHandler}
                                 />
                             </div>
                         )
