@@ -28,7 +28,7 @@ export default function Home() {
     }
     useEffect(() => {
         fetchAllGroups();
-        console.log(classrooms)
+        // console.log(classrooms)
         // eslint-disable-next-line
     },[]);
     const classroomClickHandler = () => {
