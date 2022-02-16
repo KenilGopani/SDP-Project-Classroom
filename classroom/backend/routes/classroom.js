@@ -15,7 +15,7 @@ const generate_classCode = () => {
     return classCode;
 }
 
-const sendMail = (list, className, classCode) => {
+const sendMail = (list, msg) => {
     const mailTransporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -29,8 +29,11 @@ const sendMail = (list, className, classCode) => {
         bcc: list,
         subject: 'Classroom code',
         /* Adding HTML and Text Version, so the email will not land up in the Spam folder */
-        html: `Hello ! <br><br>Your ${className} classroom code is ${classCode}<br><br>Thanks,<br>KlassRoom team<br>`,
-        text: `Hello ! <br><br>Your ${className} classroom code is ${classCode}<br><br>Thanks,<br>KlassRoom team<br>`,
+        html : msg,
+        text : msg 
+        // html: `Hello FOLKS! <br><br>Here is your classroom code <b>${classCode}</b> for <b>${className}</b>. <br><br>Thanks,<br>KlassRoom Team.<br>`,
+        // text: `Hello FOLKS! <br><br>Here is your classroom code <b>${classCode}</b> for <b>${className}</b>. <br><br>Thanks,<br>KlassRoom Team.<br>`
+        // text: `Hello ! <br><br>Your ${className} classroom code is <b>${classCode}</b><br><br>Thanks,<br>KlassRoom team<br>`,
     };
     mailTransporter.sendMail(details, err => {
         if (err)
@@ -50,29 +53,30 @@ router.put('/createClassroom', async (req, res) => {
         // console.log("+++++")
         // console.log(user._id)
         // console.log(req.body.owner)
-        var classId = null;
-        await Classroom.create({
+
+        var classroom = await Classroom.create({
             className: req.body.className,
             description: req.body.description,
             classCode: generate_classCode(),
             owner: user._id,
             members: [user._id]
         })
-        .then((classroom) => {
-            classId = classroom._id
-            console.log(classId)
-        }).catch((err) => console.log(err.message))
 
-        // console.log(classroom)
-        let r = await User.findOneAndUpdate({_id : user._id}, {$push : {classrooms : classId}}).catch((error) => console.log(error))
+        console.log(classroom)
+        await User.findOneAndUpdate({_id : user._id}, {$push : {classrooms : classroom._id}}).catch((error) => console.log(error))
         // let u = await User.findOne({ _id: user._id}).then((u) => console.log(u))
 
         /********************Email *************************/
         let listOfEmail = req.body.emailList;
         listOfEmail = listOfEmail.toString();
-        console.log(listOfEmail);
-        sendMail(listOfEmail, className, classCode);
+        // console.log(listOfEmail);
+        // console.log("-----")
+        // console.log(classroom.className)
+        let msg = `Hello FOLKS! <br><br>Here is your classroom code <b>${classroom.classCode}</b> for <b>${classroom.className}</b>. <br><br>Thanks,<br>KlassRoom Team.<br>`
+       
+        sendMail(listOfEmail, msg);
         /************************************************* */
+
         res.json({ success: true, classroom });
     }
     catch (error) {
@@ -88,8 +92,12 @@ router.put('/joinClassroom', async (req, res) => {
         const user = await User.findOne({ UID: req.body.UID });
         //find class for respective classcode
         const classroom = await Classroom.findOne({classCode : req.body.classCode})
-        let r = await User.findOneAndUpdate({_id : user._id}, {$push : {classrooms : classroom._id}})
-        let t = await Classroom.findOneAndUpdate({_id : classroom._id}, {$push : {members : user._id}}) 
+        await User.findOneAndUpdate({_id : user._id}, {$push : {classrooms : classroom._id}})
+        await Classroom.findOneAndUpdate({_id : classroom._id}, {$push : {members : user._id}})
+
+        let msg = `Thanks ${user.name} for joining <b>${classroom.className}</b> classroom.`;
+        sendMail(user.email, msg);
+         
         res.json({ success: true, classroom})
     }
     catch(err){
@@ -107,9 +115,9 @@ router.get('/fetchAllClassrooms', async (req, res) => {
         const user = await User.findOne({ UID: req.header('UID') });
         console.log(user)
         let classroomIds = user.classrooms
-        console.log(classroomIds)
+        // console.log(classroomIds)
         let classrooms = await Classroom.find({ _id: { $in: classroomIds } }).populate('owner', '_id className')
-        console.log(classrooms)
+        // console.log(classrooms)
         res.json({ success: true, classrooms });
     }
     catch (error) {
