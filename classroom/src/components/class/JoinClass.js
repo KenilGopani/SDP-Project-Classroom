@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserAuthContext from '../../context/user/UserAuthContext';
+import UserAuthContext from '../../context/userContext/UserAuthContext';
 import Modal from '../Modal'
 
 

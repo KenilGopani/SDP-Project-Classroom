@@ -1,12 +1,19 @@
 import React from 'react'
-import CreateAssignment from '../Assignment/CreateAssignment'
+import CreateAssignment from '../assignment/CreateAssignment'
 import fileLogo from '../../file-lines-solid.svg'
+import Navbar from '../main/Navbar'
+import ClassroomInfo from './ClassroomInfo'
 
 const Classroom = () => {
   return (
-      <div className="container vh-100 overflow-hidden p-0" style={{border:'2px solid red'}}>
+    <div>
+      <Navbar />
+      <div className="container-fluid vh-100 overflow-hidden p-0" style={{border:'2px solid red'}}>
         <div className='row h-100 m-0' style={{border:'2px solid red'}}>
-          <div className='col-8 h-100 p-0' style={{border:'2px solid red'}}>
+
+         <ClassroomInfo/>
+
+          <div className='col-6 h-100 p-0' style={{border:'2px solid red'}}>
             <div className='row mx-4 my-1 w-100' >
               <button type="button" className="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#createAssignmentModal">Add Assignment</button>
               <CreateAssignment />
@@ -123,12 +130,13 @@ const Classroom = () => {
             
 
           </div>
-          <div className='col-4 h-100 m-0'>
+          <div className='col-3 h-100 p-0'>
             <textarea className='h-100 w-100' />
           </div>
         </div>
       </div>
+      </div>
   )
 }
 
-export default Classroom
+export default Classroom;

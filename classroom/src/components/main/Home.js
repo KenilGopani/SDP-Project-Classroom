@@ -1,14 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import ClassCard from './ClassCard';
+import ClassCard from '../class/ClassCard';
 import Navbar from './Navbar';
-import UserAuthContext from '../../context/user/UserAuthContext';
+import UserAuthContext from '../../context/userContext/UserAuthContext';
+import ClassroomContext from '../../context/classContext/ClassroomContext';
 import { useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
     const navigate = useNavigate();
-    const { user } = useContext(UserAuthContext);
+    const { user } = useContext(UserAuthContext)
+    const { setCurrentClassroom } = useContext(ClassroomContext)
     const [classrooms, setClassrooms] = useState({});
+
     const fetchAllGroups = async () => {
         try {
             let response = await fetch('http://localhost:4099/api/classroom/fetchAllClassrooms',
@@ -31,9 +34,13 @@ export default function Home() {
         // console.log(classrooms)
         // eslint-disable-next-line
     },[]);
-    const classroomClickHandler = () => {
+
+    const handleOnClick = (classroom) => {
+        setCurrentClassroom(classroom)
+        console.log(classroom)
         navigate('/home/classroom');
     }
+
     return (
         <>
             <Navbar />
@@ -47,13 +54,8 @@ export default function Home() {
                     {classrooms.length > 0 && classrooms.map((classroom) => {
 
                         return (
-                            <div className={"col-lg-4 col-md-6 col-12"} key={classroom._id}>
-                                <ClassCard
-                                    roomName={classroom.className}
-                                    ownerName={classroom.owner.name}
-                                    imgUrl={"../../img.jpg"}
-                                    onClick={classroomClickHandler}
-                                />
+                            <div className="col-lg-4 col-md-6 col-12" onClick={() => handleOnClick(classroom)} key={classroom._id}>
+                                <ClassCard classroom = {classroom}/>
                             </div>
                         )
                     })}

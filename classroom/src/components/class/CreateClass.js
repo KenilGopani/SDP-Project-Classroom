@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserAuthContext from "../../context/user/UserAuthContext";
+import UserAuthContext from "../../context/userContext/UserAuthContext";
 import Navbar from "../main/Navbar";
 
 const CreateClass = () => {

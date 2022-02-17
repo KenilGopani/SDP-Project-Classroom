@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import UserAuthContext from './context/user/UserAuthContext';
+import UserAuthContext from './context/userContext/UserAuthContext';
 
 const Home = () => {
   const ctx = useContext(UserAuthContext);
