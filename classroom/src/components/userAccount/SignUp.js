@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import UserAuthContext from "../../context/user/UserAuthContext";
+import UserAuthContext from "../../context/userContext/UserAuthContext";
 
 
 export default function SignUp() {

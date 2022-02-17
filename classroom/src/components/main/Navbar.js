@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import UserAuthContext from '../../context/user/UserAuthContext';
+import UserAuthContext from '../../context/userContext/UserAuthContext';
 import JoinClass from '../class/JoinClass';
 
 export default function Navbar() {

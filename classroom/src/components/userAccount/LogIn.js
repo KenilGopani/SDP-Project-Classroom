@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react'
 import GoogleButton from 'react-google-button';
 import { Link, useNavigate } from "react-router-dom";
-import UserAuthContext from "../../context/user/UserAuthContext";
+import UserAuthContext from "../../context/userContext/UserAuthContext";
 
 
 export default function LogIn() {
