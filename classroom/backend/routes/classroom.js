@@ -116,7 +116,7 @@ router.get('/fetchAllClassrooms', async (req, res) => {
         console.log(user)
         let classroomIds = user.classrooms
         // console.log(classroomIds)
-        let classrooms = await (Classroom.find({ _id: { $in: classroomIds } }).populate({path : 'owner', select : 'UID name'}).populate({path : 'members', select : 'UID name'}))
+        let classrooms = await Classroom.find({ _id: { $in: classroomIds } }).populate({path : 'owner', select : 'UID name'}).populate({path : 'members', select : 'UID name'})
         // console.log(classrooms)
         res.json({ success: true, classrooms });
     }

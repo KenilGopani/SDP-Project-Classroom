@@ -25,6 +25,10 @@ const ClassroomInfo = (props) => {
         setEmail("");
     };
     const sendEmailHandler = async () => {
+        if(email.length === 0 && list.length === 0)
+            return;
+        if(list.length === 0)
+            setList(email);
         try {
             await fetch(
                 "http://localhost:4099/api/classroom/sendMail",
@@ -82,21 +86,28 @@ const ClassroomInfo = (props) => {
                 {console.log("class ow")}
                 {console.log(currentClassroom.owner.UID)} */}
                 {user.uid === currentClassroom.owner.UID && <div className='row p-2 m-0'>
-                    <label className="form-label">Send classroom code via mail :</label>
-                    <div className='d-flex justify-content-between'>
-                        <input name="className" type="email" className="w-75" value={email} onChange={(event) => setEmail(event.target.value)} />
-                        <button className="btn btn-primary m-auto p-6" style={{ width: '100px' }} type="button" onClick={emailListHandler}>Add</button>
-                        <button className="btn btn-primary m-auto p-6" style={{ width: '100px' }} type="button" onClick={sendEmailHandler}>Send</button>
-                    </div>
-                    <div className='d-flex flex-column'>
-                        <ul class="list-group overflow-auto p-0" id="emailList" style={{ maxHeight: '200px' }}>
-                        </ul>
-                        <p className='alert alert-success' id='msg' style={{ display: 'none' }}>Success</p>
+                    <button class="btn btn-secondary w-25 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Send Invitation
+                    </button>
+                    <div class="collapse" id="collapseExample">
+                        {/* <div class="card card-body"> */}
+                            {/* <label className="form-label">Send classroom code via mail :</label> */}
+                            <div className='d-flex justify-content-between'>
+                                <input name="className" type="email" className="w-75" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Enter email..." />
+                                <button className="btn btn-primary m-auto p-6" style={{ width: '100px' }} type="button" onClick={emailListHandler}>Add</button>
+                                <button className="btn btn-primary m-auto p-6" style={{ width: '100px' }} type="button" onClick={sendEmailHandler}>Send</button>
+                            </div>
+                            <div className='d-flex flex-column'>
+                                <ul class="list-group overflow-auto p-0" id="emailList" style={{ maxHeight: '200px' }}>
+                                </ul>
+                                <p className='alert alert-success' id='msg' style={{ display: 'none' }}>Success</p>
+                            </div>
+                        {/* </div> */}
                     </div>
                 </div>
                 }
-                <hr />
             </div>
+            <hr />
             <div className='row p-2 m-0'>
                 <img src={require("../../static/members.png")} className="img-fluid rounded-circle m-1 col-12" alt="Not Found!" style={{ height: '50px', width: '75px' }} />
                 <ul class="list-group h-75 overflow-auto m-auto p-0">
