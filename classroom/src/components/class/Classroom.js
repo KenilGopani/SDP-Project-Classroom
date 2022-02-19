@@ -1,8 +1,8 @@
 import React,{ useState } from 'react'
-import CreateAssignment from '../Assignment/CreateAssignment'
+import CreateAssignment from '../assignment/CreateAssignment'
 import Navbar from '../main/Navbar'
 import ClassroomInfo from './ClassroomInfo'
-import AssignmentItem from '../Assignment/AssignmentItem'
+import AssignmentItem from '../assignment/AssignmentItem'
 
 const Classroom = () => {
   const [showProfile,setShowProfile] = useState(false);
@@ -15,9 +15,9 @@ const Classroom = () => {
     <div>
       <Navbar />
       <div className="container-fluid overflow-hidden p-0" style={{height:'92vh'}}>
-        <div className='row h-100 m-0'>
+        <div className='row h-100 m-2'>
 
-          {showProfile == true ? <ClassroomInfo closeFunction={toggle}/> :
+          {showProfile === true ? <ClassroomInfo closeFunction={toggle}/> :
             (<div className='col-8 h-100 p-0'>
               <div className='row mx-4 my-1 w-100' >
                 <button type="button" className="btn btn-primary w-25 m-1" data-bs-toggle="modal" data-bs-target="#createAssignmentModal">Add Assignment</button>

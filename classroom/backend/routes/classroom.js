@@ -116,13 +116,13 @@ router.get('/fetchAllClassrooms', async (req, res) => {
         console.log(user)
         let classroomIds = user.classrooms
         // console.log(classroomIds)
-        let classrooms = await Classroom.find({ _id: { $in: classroomIds } }).populate('owner', '_id className')
+        let classrooms = await (Classroom.find({ _id: { $in: classroomIds } }).populate({path : 'owner', select : 'UID name'}).populate({path : 'members', select : 'UID name'}))
         // console.log(classrooms)
         res.json({ success: true, classrooms });
     }
     catch (error) {
-        res.status(500).send("Internal Server Error");
-        // res.status(500).send(error);
+        console(error)
+        // res.status(500).send("Internal Server Error");
     }
 
 })
