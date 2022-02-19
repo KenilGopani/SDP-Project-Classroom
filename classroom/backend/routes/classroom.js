@@ -127,8 +127,17 @@ router.get('/fetchAllClassrooms', async (req, res) => {
 
 })
 
-router.get('/sendMail', async (req, res) => {
+router.put('/sendMail', async (req, res) => {
+    try{
+        let msg = `Hello FOLKS! <br><br>Here is your classroom code <b>${req.body.classCode}</b> for <b>${req.body.className}</b>. <br><br>Thanks,<br>KlassRoom Team.<br>`
+        sendMail(req.body.emailList, msg);
+        res.json({ success: true})
+    }
+    catch(err){
+        // console.log(err);
+        res.status(500).send("Internal Server Error");
 
+    }
 })
 
 module.exports = router
