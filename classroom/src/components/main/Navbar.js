@@ -22,7 +22,7 @@ export default function Navbar() {
     return (
         <>
             <JoinClass/>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ "backgroundColor": "#e3f2fd" }}>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top" style={{ "backgroundColor": "#e3f2fd" }}>
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">Klassroom</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

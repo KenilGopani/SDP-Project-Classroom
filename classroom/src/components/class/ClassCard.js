@@ -9,7 +9,7 @@ const ClassCard = ({classroom}) => {
           <div className="row align-items-center" >
             <div className="col-8 fs-4 card-title" >{classroom.className}</div>
             <div className="col-4 card-title">
-              <img src={require("../../img.jpg")} className="img-fluid rounded m-2" alt="image" />
+              <img src={require("../../static/group.ico")} className="img-fluid rounded m-2" alt="image" />
             </div>
           </div>
         </div>
