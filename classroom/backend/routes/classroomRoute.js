@@ -140,4 +140,31 @@ router.put('/sendMail', async (req, res) => {
     }
 })
 
+router.put('/updateClassroomInfo', async (req, res) => {
+    try {
+        const {classId,className,classDescription} = req.body;
+        let newClassroom = {};
+        if(className)
+            newClassroom.className = className;
+        if(classDescription)
+            newClassroom.description = classDescription;
+        
+        let classroom = await Classroom.findOne({ _id: classId });
+        if(classroom)
+        {
+            classroom = await Classroom.findOneAndUpdate(
+                { _id: classId },
+                { $set: newClassroom
+                },
+              )
+              console.log("Updated");
+              return res.json(classroom); 
+        }
+        return res.json({msg : classroom});
+    } catch (error) {
+        res.status(500).send("Internal Server Error");
+    }
+
+})
+
 module.exports = router
