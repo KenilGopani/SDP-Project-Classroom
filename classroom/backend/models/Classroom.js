@@ -17,11 +17,17 @@ const ClassroomSchema = new mongoose.Schema({
     },
     owner : {
         type : mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
+        ref: 'Users',
+        require : true
     },
     members:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
+        ref: 'Users',
+        require : true
+    }],
+    assignments : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Assignments'
     }]
 })
 module.exports = mongoose.model('Classrooms',ClassroomSchema);
