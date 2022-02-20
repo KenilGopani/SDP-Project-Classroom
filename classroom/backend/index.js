@@ -12,9 +12,9 @@ app.use(express.json())
 //     res.send("Hello Students ..")
 // ),
 // Here, Available Routes
-app.use('/api/auth', require('./routes/auth')),
-app.use('/api/classroom', require('./routes/classroom')),
-
+app.use('/api/auth', require('./routes/authRoute')),
+app.use('/api/classroom', require('./routes/classroomRoute')),
+app.use('/api/assignment', require('./routes/assignmentRoute'))
 
 app.listen(port, () => {
     console.log(`Classroom listening at http://localhost:${port}`)
