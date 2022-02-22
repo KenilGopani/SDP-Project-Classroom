@@ -24,4 +24,13 @@ router.put('/createAssignment', async (req, res) => {
     }
 })
 
+router.get('/fetchAllAssignment', async (req, res) =>{
+
+    let classroom = await Classroom.findOne({_id : req.header('classroomId')})
+    let assignmentIds = classroom.assignments;
+
+    let response = await Assignment.find({_id : {$in : assignmentIds}}).populate('owner', 'UID')
+    res.send({success:true, response})
+})
+
 module.exports = router
