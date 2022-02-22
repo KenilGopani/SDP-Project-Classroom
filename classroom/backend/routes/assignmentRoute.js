@@ -26,11 +26,20 @@ router.put('/createAssignment', async (req, res) => {
 
 router.get('/fetchAllAssignment', async (req, res) =>{
 
-    let classroom = await Classroom.findOne({_id : req.header('classroomId')})
-    let assignmentIds = classroom.assignments;
+    try{
+        // console.log(req.header('classroomId'))
+        let classroom = await Classroom.findOne({_id : req.header('classroomId')})
+        
+        let assignmentIds = classroom.assignments;
+        let assignments = await Assignment.find({_id : {$in : assignmentIds}}).populate('owner', 'UID')
+        // console.log("As :- ",assignments)
+        res.send({success:true, assignments})
 
-    let response = await Assignment.find({_id : {$in : assignmentIds}}).populate('owner', 'UID')
-    res.send({success:true, response})
-})
+    }
+    catch(error){
+        res.status(500).send("Internal server error")
+        // console.log(error)
+    }
+    })
 
 module.exports = router
