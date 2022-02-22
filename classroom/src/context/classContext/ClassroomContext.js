@@ -1,4 +1,4 @@
 import { createContext } from "react";
 
-const ClasroomContext = createContext();
-export default ClasroomContext;
+const ClassroomContext = createContext();
+export default ClassroomContext;
