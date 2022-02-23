@@ -20,7 +20,7 @@ const CreateAssignment = () => {
 
       let res = await fetch('http://localhost:4099/api/assignment/createAssignment',
         {
-          method : "PUT",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -31,8 +31,8 @@ const CreateAssignment = () => {
             classroomId: currentClassroom._id,
           }),
         })
-        // console.log(res)
-        navigate('/home/classroom')
+      // console.log(res)
+      navigate('/home/classroom')
     }
     catch (err) {
       console.log(err);
@@ -56,7 +56,11 @@ const CreateAssignment = () => {
             </div>
             <div className="mb-3">
               <label className="form-label required">Description</label>
-              <input type="text" className="form-control" name="description" value={assignmentDescription} onChange={(event) => setAssignmetDescription(event.target.value)} />
+              <textarea
+                type="text"
+                className="form-control"
+                name="description" value={assignmentDescription} onChange={(event) => setAssignmetDescription(event.target.value)}
+              />
             </div>
             <button type="submit" className="btn btn-primary">Create</button>
             <Link to={'/home/classroom'} className="btn btn-danger m-1" >Cancel</Link>

@@ -1,19 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import classes from './Profile.module.css';
+import UserAuthContext from "../../context/userContext/UserAuthContext";
 
 const Profile = () => {
+    const [userMongo,setUserMongo] = useState({});
+    const { user } = useContext(UserAuthContext);
+
+    const fetchUserDetails = async() => {
+        try {
+            let response = await fetch(
+              "http://localhost:4099/api/auth/getProfile",
+              {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                  },
+                body: JSON.stringify({
+                  'userId': user.uid,
+                }),
+              }
+            );
+            response = await response.json();
+            setUserMongo(response.user);
+          } catch (err) {
+            console.log(err);
+          }
+    }
+    useEffect(()=>{
+        fetchUserDetails();
+    },[]);
+
     return (
         <>
-            <div className="container border border-dark rounded" >
+            <div className="container border border-dark rounded mt-5" >
                 <div className={classes.mainBody}>
                     <div className={`row ${classes.guttersSm}`} >
                         <div className={`col-md-4 ${classes.mb3}`} >
                             <div className={classes.card}>
                                 <div className={classes.cardBody}>
                                     <div className={"d-flex flex-column align-items-center text-center"} >
-                                        <img src={require("../../static/img.jpg")} alt="Admin" className={"rounded-circle"} width="150" height="150" />
+                                        <img src={require("../../static/user.png")} alt="Admin" className={"rounded-circle"} width="150" height="150" />
                                         <div className={"mt-3"}>
-                                            <h4>John Doe</h4>
+                                            <h4>{userMongo.name}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -27,7 +55,7 @@ const Profile = () => {
                                             <h6 className={"mb-0"}>Full Name</h6>
                                         </div>
                                         <div className={"col-sm-9 text-secondary"}>
-                                            Kenneth Valdez
+                                            {userMongo.name}
                                         </div>
                                     </div>
                                     <hr />
@@ -36,7 +64,7 @@ const Profile = () => {
                                             <h6 className={"mb-0"}>Email</h6>
                                         </div>
                                         <div className={"col-sm-9 text-secondary"}>
-                                            fip@jukmuh.al
+                                            {userMongo.email}
                                         </div>
                                     </div>
                                     <hr />
@@ -69,14 +97,11 @@ const Profile = () => {
                                     <hr />
                                     <div className={"row"}>
                                         <div className={"col-sm-12"}>
-                                            <a className={"btn btn-info"} target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                                            <button className={"btn btn-info"} >Edit</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
 

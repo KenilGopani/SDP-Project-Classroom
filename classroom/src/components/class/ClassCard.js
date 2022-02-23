@@ -4,7 +4,7 @@ const ClassCard = ({classroom}) => {
 
   return (
     <>
-      <div className={`card card shadow p-3 m-1 bg-body rounded`} style={{ height: '300px', minWidth: '300px' }} onClick={null}>
+      <div className={`card myCard shadow p-3 m-1 bg-body rounded`} style={{ height: '300px', minWidth: '300px' }} onClick={null}>
         <div className="container rounded bg-primary text-white">
           <div className="row align-items-center" >
             <div className="col-8 fs-4 card-title" >{classroom.className}</div>
