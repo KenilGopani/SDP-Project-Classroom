@@ -42,4 +42,13 @@ router.get('/fetchAllAssignment', async (req, res) =>{
     }
     })
 
+router.get('/:id',async (req,res) => {
+    try{
+        const assignment = await Assignment.findOne({_id : req.params.id});
+        res.json({assignment});
+    }
+    catch(err){
+        res.status(500).send("Internal server error")
+    }
+});
 module.exports = router

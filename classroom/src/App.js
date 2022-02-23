@@ -11,6 +11,7 @@ import JoinClass from './components/class/JoinClass';
 import UserAuthProvider from "./context/userContext/UserAuthProvider";
 import ClassroomProvider from './context/classContext/ClassroomProvider'
 import CreateAssignment from './components/assignment/CreateAssignment';
+import Assignment from './components/assignment/Assignment';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/home/classroom" element={<Classroom />} />
           <Route exact path="/home/classroom/assignment" element={<CreateAssignment/>} />
+          <Route exact path="/home/classroom/viewassignment/:id" element={<Assignment />} />
           <Route exact path="/createClass" element={<CreateClass />} />
           <Route exact path="/joinClass" element={<JoinClass />} />
         </Routes>

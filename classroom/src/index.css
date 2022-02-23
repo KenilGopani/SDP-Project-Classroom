@@ -172,7 +172,7 @@ i{
 /* classroom CSS */
 
 
-.card:hover{
+.myCard:hover{
   cursor: pointer;
   transform: scale(0.99);
   transition-duration: 0.1s;
