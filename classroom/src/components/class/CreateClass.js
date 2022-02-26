@@ -111,7 +111,7 @@ const CreateClass = () => {
                   </div>
                 </div>
                 <div className="col-5">
-                  <ul class="list-group h-75 overflow-auto" id="emailList">
+                  <ul className="list-group h-75 overflow-auto" id="emailList">
                   </ul>
                 </div>
               </div>
