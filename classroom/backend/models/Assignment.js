@@ -20,6 +20,11 @@ const AssignmentSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref: 'Classrooms',
         require : true
-    }
+    },
+    submissions : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Submissions',
+        require : true
+    }]
 })
 module.exports = mongoose.model('Assignments',AssignmentSchema);

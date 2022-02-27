@@ -34,8 +34,6 @@ const Classroom = () => {
     catch (err) {
       console.log(err)
     }
-
-
   }
 
   useEffect(() => {
