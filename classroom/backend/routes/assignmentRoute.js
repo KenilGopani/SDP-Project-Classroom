@@ -45,7 +45,9 @@ router.get('/fetchAllAssignment', async (req, res) =>{
 
 router.get('/:id',async (req,res) => {
     try{
-        const assignment = await Assignment.findOne({_id : req.params.id}).populate('submissions', 'userId SubmissionLink points submissionDate');
+        const assignment = await Assignment.findOne({_id : req.params.id}).populate('submissions', 'userId SubmissionLink points submissionDate')
+            .populate({path: 'submissions',populate:{path:'userId',select:'UID name'}});
+        console.log(assignment)
         res.json({assignment});
         console.log(assignment);
     }

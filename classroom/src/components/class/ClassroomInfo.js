@@ -120,7 +120,7 @@ const ClassroomInfo = (props) => {
                     <label className="col-2 h5 m-auto">Name : </label>
                     <input className='col-8 m-auto w-75 form-control' id='cName' onChange={(event) => {
                         setClassName(event.target.value);
-                    }} readOnly='true' value={className} style={{background:'transparent'}}/>
+                    }} readOnly={true} value={className} style={{background:'transparent'}}/>
                     <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
                         const cName = document.getElementById('cName');
                         document.getElementById('close').style.display = 'block';
@@ -134,7 +134,7 @@ const ClassroomInfo = (props) => {
                     <label className="col-2 h5 m-auto">Description : </label>
                     <textarea className='col-8 fs-5 m-auto fw-normal w-75 form-control' id='cDesc' onChange={(event) => {
                         setClassDescription(event.target.value)
-                    }} readOnly='true' value={classDescription} style={{height:'120px',background:'transparent'}}/>
+                    }} readOnly={true} value={classDescription} style={{height:'120px',background:'transparent'}}/>
                     <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
                         const cDesc = document.getElementById('cDesc');
                         document.getElementById('close').style.display = 'block';
@@ -161,10 +161,10 @@ const ClassroomInfo = (props) => {
                 {console.log("class ow")}
                 {console.log(currentClassroom.owner.UID)} */}
                 {user.uid === currentClassroom.owner.UID && <div className='row p-2 m-0'>
-                    <button class="btn btn-secondary w-25 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button className="btn btn-secondary w-25 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         Send Invitation
                     </button>
-                    <div class="collapse" id="collapseExample">
+                    <div className="collapse" id="collapseExample">
                         {/* <div class="card card-body"> */}
                         {/* <label className="form-label">Send classroom code via mail :</label> */}
                         <div className='d-flex justify-content-between'>
@@ -173,7 +173,7 @@ const ClassroomInfo = (props) => {
                             <button className="btn btn-primary m-auto p-6" style={{ width: '100px' }} type="button" onClick={sendEmailHandler}>Send</button>
                         </div>
                         <div className='d-flex flex-column'>
-                            <ul class="list-group overflow-auto p-0" id="emailList" style={{ maxHeight: '200px' }}>
+                            <ul className="list-group overflow-auto p-0" id="emailList" style={{ maxHeight: '200px' }}>
                             </ul>
                             <p className='alert alert-success' id='msg' style={{ display: 'none' }}>Success</p>
                         </div>
@@ -185,7 +185,7 @@ const ClassroomInfo = (props) => {
             <hr />
             <div className='row p-2 m-0'>
                 <img src={require("../../static/members.png")} className="img-fluid rounded-circle m-1 col-12" alt="Not Found!" style={{ height: '50px', width: '75px' }} />
-                <ul class="list-group h-75 overflow-auto m-auto p-0">
+                <ul className="list-group h-75 overflow-auto m-auto p-0">
                     {currentClassroom.members.length === 0 && <div>No members</div>}
                     {currentClassroom.members.length > 0 && currentClassroom.members.map((member) => <li className="list-group-item" >{member.name}</li>)}
                 </ul>
