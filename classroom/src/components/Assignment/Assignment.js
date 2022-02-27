@@ -4,14 +4,18 @@ import { auth, storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import Navbar from '../main/Navbar'
 import UserAuthContext from '../../context/userContext/UserAuthContext'
-import { isDisabled } from '@testing-library/user-event/dist/utils'
+import ClassroomContext from '../../context/classContext/ClassroomContext'
 
 const Assignment = () => {
     const [assignmentUrl, setAssignmentUrl] = useState('');
     const { id } = useParams();
-    const [assignment, setAssignment] = useState();
+    const [assignment, setAssignment] = useState({});
     const [progress, setProgress] = useState(0);
-    const [uploadState,setUploadState] = useState(0);
+    const [uploadState, setUploadState] = useState(0);
+
+    const {user} = useContext(UserAuthContext)
+    const {currentClassroom} = useContext(ClassroomContext)
+
     useEffect(async () => {
         try {
             let response = await fetch(`http://localhost:4099/api/assignment/${id}`, {
@@ -31,13 +35,13 @@ const Assignment = () => {
         const file = event.target[0].files[0];
         uploadFile(file);
     }
-    const uploadFile = (file) => {
-        if (!file)
-        {
+
+    const uploadFile = async (file) => {
+        if (!file) {
             setUploadState(0);
             return;
         }
-            
+
         const storageRef = ref(storage, `/assignments/${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         uploadTask.on("state_changed", (snapshot) => {
@@ -48,8 +52,33 @@ const Assignment = () => {
                 .then((url) => {
                     setAssignmentUrl(url);
                     setUploadState(2);
+                    uploadAssignmentInMongo(url); //own function (use 'url' insted setAssignmentUrl )
+
                 })
         });
+    }
+
+    const uploadAssignmentInMongo = async (url) => {
+        try {
+            let response = await fetch('http://localhost:4099/api/assignment/submitAssignment',{
+                method : 'PUT',
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify({
+                        userUID : user.uid,
+                        classroomId : currentClassroom._id,
+                        assignmentId : id, //id that came from params
+                        SubmissionLink : url, // from the firebase
+                        points : 0
+                })
+            })
+            // response = await response.json()
+            // console.log(response)
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -72,12 +101,12 @@ const Assignment = () => {
                             <h5 htmlFor="formFile" className="form-label col-12">Submit Here : </h5>
                             <input className="form-control w-50 col-8" type="file" id="formFile" />
                             <button className='btn btn-primary ml-5 col-2' type='submit'>Upload</button>
-                            <span class="col-2 border-0"  hidden={uploadState === 1 ?false : true}>
+                            <span class="col-2 border-0" hidden={uploadState === 1 ? false : true}>
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 &nbsp; {progress}%
                             </span>
                         </form>
-                        <a className='btn btn-secondary m-1 w-25' hidden={uploadState === 2 ?false : true} href={assignmentUrl} target='_blank'>View Uploaded file</a>
+                        <a className='btn btn-secondary m-1 w-25' hidden={uploadState === 2 ? false : true} href={assignmentUrl} target='_blank'>View Uploaded file</a>
                     </div>
                 </div>
             </div>

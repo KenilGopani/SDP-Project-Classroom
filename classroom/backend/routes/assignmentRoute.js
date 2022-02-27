@@ -2,6 +2,7 @@ const express = require('express')
 const User = require('./../models/User')
 const Classroom = require('./../models/Classroom')
 const Assignment = require('./../models/Assignment')
+const Submission = require('./../models/Submission')
 const router = express.Router()
 
 router.put('/createAssignment', async (req, res) => {
@@ -44,11 +45,35 @@ router.get('/fetchAllAssignment', async (req, res) =>{
 
 router.get('/:id',async (req,res) => {
     try{
-        const assignment = await Assignment.findOne({_id : req.params.id});
+        const assignment = await Assignment.findOne({_id : req.params.id}).populate('submissions', 'userId SubmissionLink points submissionDate');
         res.json({assignment});
+        console.log(assignment);
     }
     catch(err){
         res.status(500).send("Internal server error")
     }
 });
+
+router.put('/submitAssignment', async (req, res)=> {
+
+    try{
+        // console.log("______ ", req.body.userUID)
+        const user  = await User.findOne({UID : req.body.userUID}) //getting user id from uid
+        const submitResponse = await Submission.create({
+            userId : user._id,
+            classroomId : req.body.classroomId,
+            assignmentId : req.body.assignmentId,
+            SubmissionLink : req.body.SubmissionLink,
+            points : 0
+        })
+        const assignmentResponse = await Assignment.findOneAndUpdate({_id : submitResponse.assignmentId},{$push : {submissions : submitResponse._id}})
+        res.send({success : true, submitResponse})
+    }
+    catch(err){
+        // console.log(err);
+        res.status(500).send("Internal Server Error")
+    }
+})
+
+
 module.exports = router
