@@ -10,7 +10,6 @@ const Assignment = () => {
     const { user } = useContext(UserAuthContext)
     const { currentClassroom } = useContext(ClassroomContext)
 
-
     const [tipTitle, setTipTitle] = useState('');
     const [assignmentUrl, setAssignmentUrl] = useState('');
     const { id } = useParams();
@@ -18,8 +17,8 @@ const Assignment = () => {
     const [progress, setProgress] = useState(0);
 
     const [allUser, setAllUser] = useState(currentClassroom.members);
-    const [allDoneUser, setAllDoneUser] = useState([]);
-    const [allNotDoneUser, setAllNotDoneUser] = useState([]);
+    const [submittedUser, setSubmittedUser] = useState([]);
+    const [notSubmittedUser, setNotSubmittedUser] = useState([]);
     /**
      * 0 - not uploaded
      * 1 - uploading
@@ -29,11 +28,11 @@ const Assignment = () => {
 
     function getDifference(array1, array2) {
         return array1.filter(object1 => {
-          return !array2.some(object2 => {
-            return object1._id === object2._id;
-          });
+            return !array2.some(object2 => {
+                return object1._id === object2._id;
+            });
         });
-      }
+    }
     useEffect(async () => {
         try {
             let response = await fetch(`http://localhost:4099/api/assignment/${id}`, {
@@ -49,24 +48,19 @@ const Assignment = () => {
                 setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
             }
             setAssignment(response.assignment);
-
-            let doneUser = response.assignment.submissions.map(submission => submission.userId);
-            setAllDoneUser(doneUser);
-            const notDoneUser = getDifference(allUser,doneUser);
-            setAllNotDoneUser(notDoneUser);
+            console.log(response.assignment.submissions);
+            let doneUser = response.assignment.submissions.map(submission => 
+                {
+                    return {user: submission.userId,submissionLink: submission.SubmissionLink}
+                });
+            setSubmittedUser(doneUser);
+            const notDoneUser = getDifference(allUser, doneUser.user);
+            setNotSubmittedUser(notDoneUser);
         }
         catch (err) {
             console.log(err)
         }
     }, []);
-
-    // useEffect(() => {
-    //     if (assignment !== undefined) {
-    //         let doneUser = assignment.submissions.map(submission => submission.userId);
-    //         setAllDoneUser(doneUser);
-    //         console.log(allUser);
-    //     }
-    // }, [assignment]);
     const submitHandler = (event) => {
         event.preventDefault();
         setUploadState(1);
@@ -136,7 +130,7 @@ const Assignment = () => {
                         {assignment && assignment.assignmentDescription}
                     </div>
                     <hr className='mx-0' />
-                    <div className="row mb-3">
+                    <div className="row">
                         <form onSubmit={submitHandler} className="row">
                             <h5 htmlFor="formFile" className="form-label col-12">Submit Here : </h5>
                             <input className="form-control w-50 col-6" type="file" id="formFile" />
@@ -146,14 +140,14 @@ const Assignment = () => {
                             <span className='mx-1 col-2 w-auto' data-toggle="tooltip" data-html="true" title="Cancel submission">
                                 <button className='btn btn-primary' ><i className="fa fa-close" /></button>
                             </span>
-                            <a className='btn btn-secondary mx-1 w-auto col-2' hidden={uploadState !== 2 ? true : false} href={assignmentUrl} target='_blank'><i className='fas fa-file-alt' />&nbsp; View</a>
+                            <a className='btn btn-secondary mx-1 col-2' hidden={uploadState !== 2 ? true : false} href={assignmentUrl} target='_blank'><i className='fas fa-file-alt' />&nbsp; View</a>
                             <span className="col-2 border-0" hidden={uploadState === 1 ? false : true}>
                                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 &nbsp; {progress}%
                             </span>
                         </form>
                     </div>
-                    <div className="row">
+                    <div className="row mt-3">
                         <div className="card">
                             <div className="card-header" id="headingOne">
                                 <h2 className="mb-0">
@@ -166,8 +160,11 @@ const Assignment = () => {
                                         <h4><em>Submitted List :</em></h4>
                                         <hr />
                                         <ul className='list-group'>
-                                            {allDoneUser.map(user => (
-                                                <li className='list-group-item'>{user.name}</li>
+                                            {submittedUser.map(user => (
+                                                <li className='list-group-item row m-0 p-0'>
+                                                    <p className='col-10 d-inline-block' >{user.name}</p> 
+                                                    <a href={user.submissionLink} className="fa fa-file-text col-2 link-secondary" style={{fontSize:'24px'}} target='_blank'/>
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
@@ -175,7 +172,7 @@ const Assignment = () => {
                                         <h4><em>Pending List :</em></h4>
                                         <hr />
                                         <ul className='list-group'>
-                                            {allNotDoneUser.map(user => (
+                                            {notSubmittedUser.map(user => (
                                                 <li className='list-group-item'>{user.name}</li>
                                             ))}
                                         </ul>
