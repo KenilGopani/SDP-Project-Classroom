@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ClassroomContext from '../../context/classContext/ClassroomContext'
 import UserAuthContext from "../../context/userContext/UserAuthContext";
-
+import Navbar from "../main/Navbar";
 const CreateAssignment = () => {
 
   const { currentClassroom } = useContext(ClassroomContext)
@@ -41,33 +41,36 @@ const CreateAssignment = () => {
   }
 
   return (
-    <div className="container mt-5 border border-dark rounded" style={{ maxWidth: "720px" }}>
-      <div className="row border-bottom border-dark">
-        <div className="col bg-primary text-white p-3">
-          <h3 className="text-center fw-bold">Create Assignment</h3>
+    <>
+      <Navbar />
+      <div className="container mt-5 border border-dark rounded" style={{ maxWidth: "720px" }}>
+        <div className="row border-bottom border-dark">
+          <div className="col bg-primary text-white p-3">
+            <h3 className="text-center fw-bold">Create Assignment</h3>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <form onSubmit={onSubmitHandler}>
+              <div className="mb-3">
+                <label className="form-label required">Title</label>
+                <input type="text" className="form-control" name="title" value={assignmentName} onChange={(event) => setAssignmetName(event.target.value)} />
+              </div>
+              <div className="mb-3">
+                <label className="form-label required">Description</label>
+                <textarea
+                  type="text"
+                  className="form-control"
+                  name="description" value={assignmentDescription} onChange={(event) => setAssignmetDescription(event.target.value)}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">Create</button>
+              <Link to={'/home/classroom'} className="btn btn-danger m-1" >Cancel</Link>
+            </form>
+          </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col">
-          <form onSubmit={onSubmitHandler}>
-            <div className="mb-3">
-              <label className="form-label required">Title</label>
-              <input type="text" className="form-control" name="title" value={assignmentName} onChange={(event) => setAssignmetName(event.target.value)} />
-            </div>
-            <div className="mb-3">
-              <label className="form-label required">Description</label>
-              <textarea
-                type="text"
-                className="form-control"
-                name="description" value={assignmentDescription} onChange={(event) => setAssignmetDescription(event.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">Create</button>
-            <Link to={'/home/classroom'} className="btn btn-danger m-1" >Cancel</Link>
-          </form>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
