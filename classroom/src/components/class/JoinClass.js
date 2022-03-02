@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserAuthContext from '../../context/userContext/UserAuthContext';
+import ClassroomContext from '../../context/classContext/ClassroomContext';
 import Modal from '../Modal'
 
 
@@ -8,6 +9,7 @@ export default function JoinClass() {
 
   const [classroomCode, setclassroomCode] = useState("");
   const { user } = useContext(UserAuthContext)
+  const { setCurrentClassroom } = useContext(ClassroomContext)
   const closeBtnRef = useRef(null);
   const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ export default function JoinClass() {
   const handleOnClick = async (event) => {
     event.preventDefault()
     try {
-      const response = await fetch("http://localhost:4099/api/classroom/joinClassroom",
+      let response = await fetch("http://localhost:4099/api/classroom/joinClassroom",
         {
           method: "PUT",
           headers: {
@@ -30,6 +32,10 @@ export default function JoinClass() {
           }),
         }
       );
+      response = await response.json();
+      console.log(response)
+      console.log(response.classroom)
+      setCurrentClassroom(response.classroom)
     }
     catch (err) {
       console.log(err);
@@ -37,7 +43,7 @@ export default function JoinClass() {
 
     setclassroomCode(event.target.value);
     closeBtnRef.current.click();
-    navigate('/home')
+    navigate('/home/classroom')
   }
 
   return (
