@@ -5,6 +5,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import Navbar from '../main/Navbar'
 import UserAuthContext from '../../context/userContext/UserAuthContext'
 import ClassroomContext from '../../context/classContext/ClassroomContext'
+import MailModal from '../assignment/MailModal';
 
 const Assignment = () => {
     const { user } = useContext(UserAuthContext)
@@ -17,8 +18,10 @@ const Assignment = () => {
     const [progress, setProgress] = useState(0);
 
     const [allUser, setAllUser] = useState(currentClassroom.members);
-    const [submittedUser, setSubmittedUser] = useState([]);
-    const [notSubmittedUser, setNotSubmittedUser] = useState([]);
+    const [submittedUsers, setSubmittedUsers] = useState([]);
+    const [notSubmittedUsers, setNotSubmittedUsers] = useState([]);
+
+    const [currentSelectedMail,setCurrentSelectedMail] = useState('');
     /**
      * 0 - not uploaded
      * 1 - uploading
@@ -29,10 +32,27 @@ const Assignment = () => {
     function getDifference(array1, array2) {
         return array1.filter(object1 => {
             return !array2.some(object2 => {
-                return object1._id === object2._id;
+                return object1._id === object2.user._id;
             });
         });
     }
+    // function getDifference(array1, array2) {
+    //     let mySet1 = new Set();
+    //     for (let i = 0; i < array1.length; i++) {
+    //         const id = array1[i]._id;
+    //         mySet1.add({ id: array1[i] })
+    //     }
+    //     let mySet2 = new Set();
+    //     for (let i = 0; i < array2.length; i++) {
+    //         const id = array2[i]._id;
+    //         if(mySet1.has(id))
+    //         {
+    //             console.log(mySet1.delete(id));
+    //         }
+    //     }
+    //     console.log(mySet1)
+    //     // return mySet1;
+    // }
     useEffect(async () => {
         try {
             let response = await fetch(`http://localhost:4099/api/assignment/${id}`, {
@@ -48,14 +68,16 @@ const Assignment = () => {
                 setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
             }
             setAssignment(response.assignment);
-            console.log(response.assignment.submissions);
-            let doneUser = response.assignment.submissions.map(submission => 
-                {
-                    return {user: submission.userId,submissionLink: submission.SubmissionLink}
-                });
-            setSubmittedUser(doneUser);
-            const notDoneUser = getDifference(allUser, doneUser.user);
-            setNotSubmittedUser(notDoneUser);
+            console.log(response.assignment);
+            let doneUser = response.assignment.submissions.map(submission => {
+                return { user: submission.userId, submissionLink: submission.SubmissionLink }
+            });
+            setSubmittedUsers(doneUser);
+            // const notDoneUser = getDifference(currentClassroom.members, doneUser);
+            // setNotSubmittedUsers(notDoneUser);
+            // console.log(allUser)
+            // console.log(doneUser);
+            // console.log(notDoneUser);
         }
         catch (err) {
             console.log(err)
@@ -68,7 +90,6 @@ const Assignment = () => {
         uploadFile(file);
         document.getElementById('formFile').value = '';
     }
-
     const uploadFile = async (file) => {
         if (!file) {
             setUploadState(0);
@@ -87,11 +108,9 @@ const Assignment = () => {
                     setUploadState(2);
                     setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
                     uploadAssignmentInMongo(url); //own function (use 'url' insted setAssignmentUrl )
-
                 })
         });
     }
-
     const uploadAssignmentInMongo = async (url) => {
         try {
             let response = await fetch('http://localhost:4099/api/assignment/submitAssignment', {
@@ -115,8 +134,35 @@ const Assignment = () => {
         }
     }
 
+    const reminderHandler = async () => {
+        const list = notSubmittedUsers.map(user => user.email);
+        try {
+            let response = await fetch('http://localhost:4099/api/assignment/reminder', {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    list: list,
+                    assignmentName: assignment.assignmentName,
+                    className: currentClassroom.className,
+                })
+            })
+            console.log("Mail send................")
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleXYZ = () => {
+        const notDoneUser = getDifference(currentClassroom.members, submittedUsers);
+        setNotSubmittedUsers(notDoneUser);
+    }
+
     return (
         <>
+            <MailModal mailTo={currentSelectedMail}/>
             <Navbar />
             <div className='container mt-3 p-5'>
                 <div className='p-3'>
@@ -151,7 +197,7 @@ const Assignment = () => {
                         <div className="card">
                             <div className="card-header" id="headingOne">
                                 <h2 className="mb-0">
-                                    <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Submission Status</a>
+                                    <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1" onClick={handleXYZ}>Submission Status</a>
                                 </h2>
                             </div>
                             <div className="collapse multi-collapse" id="multiCollapseExample1">
@@ -160,20 +206,27 @@ const Assignment = () => {
                                         <h4><em>Submitted List :</em></h4>
                                         <hr />
                                         <ul className='list-group'>
-                                            {submittedUser.map(user => (
-                                                <li className='list-group-item row m-0 p-0'>
-                                                    <p className='col-10 d-inline-block' >{user.name}</p> 
-                                                    <a href={user.submissionLink} className="fa fa-file-text col-2 link-secondary" style={{fontSize:'24px'}} target='_blank'/>
+                                            {submittedUsers.map(sUser => (
+                                                <li className='list-group-item row m-0 p-0' key={sUser.user._id}>
+                                                    <p className='col-8 d-inline-block' >{sUser.user.name}</p>
+                                                    <a href={sUser.submissionLink} className="fa fa-file-text col-2 link-secondary" style={{ fontSize: '24px' }} target='_blank' />  
+                                                    <i className="fa fa-envelope col-2 link-secondary" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={()=>setCurrentSelectedMail(sUser.user.email)}/>
                                                 </li>
                                             ))}
                                         </ul>
                                     </div>
                                     <div className='row'>
-                                        <h4><em>Pending List :</em></h4>
+                                        <div className='row m-0 p-0'>
+                                            <h4 className='col-10 d-inline-block'><em>Pending List :</em></h4>
+                                            <button className='btn btn-primary col-2' onClick={reminderHandler}>Reminder</button>
+                                        </div>
                                         <hr />
                                         <ul className='list-group'>
-                                            {notSubmittedUser.map(user => (
-                                                <li className='list-group-item'>{user.name}</li>
+                                            {notSubmittedUsers.map(nUser => (
+                                                <li className='list-group-item row m-0 p-0' key={nUser._id}>
+                                                    <p className='col-10 d-inline-block' >{nUser.name}</p>
+                                                    <i className="fa fa-envelope link-secondary col-2" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={()=>setCurrentSelectedMail(nUser.user.email)} />
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
