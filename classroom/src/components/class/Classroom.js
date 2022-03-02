@@ -50,7 +50,7 @@ const Classroom = () => {
         <div className='row h-100 m-2'>
 
           {showProfile === true ? <ClassroomInfo closeFunction={toggle} /> :
-            (<div className='col-8 h-100 p-0'>
+            (<div className='col-12  h-100 p-0'>
               <div className='row mx-4 my-1 w-100' >
                 {
                 console.log("1 user ",user.uid,"class own ", currentClassroom.owner.UID )
@@ -76,9 +76,9 @@ const Classroom = () => {
               </ul>
             </div>)
           }
-          <div className='col-4 h-100 p-0'>
+          {/* <div className='col-4 h-100 p-0'>
             <textarea className='h-100 w-100' />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
