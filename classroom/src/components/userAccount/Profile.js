@@ -1,37 +1,38 @@
 import React, { useEffect, useState, useContext } from 'react'
 import classes from './Profile.module.css';
 import UserAuthContext from "../../context/userContext/UserAuthContext";
-
+import Navbar from '../main/Navbar';
 const Profile = () => {
-    const [userMongo,setUserMongo] = useState({});
+    const [userMongo, setUserMongo] = useState({});
     const { user } = useContext(UserAuthContext);
 
-    const fetchUserDetails = async() => {
+    const fetchUserDetails = async () => {
         try {
             let response = await fetch(
-              "http://localhost:4099/api/auth/getProfile",
-              {
-                method: "PUT",
-                headers: {
-                    'Content-Type': 'application/json',
-                  },
-                body: JSON.stringify({
-                  'userId': user.uid,
-                }),
-              }
+                "http://localhost:4099/api/auth/getProfile",
+                {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'userId': user.uid,
+                    }),
+                }
             );
             response = await response.json();
             setUserMongo(response.user);
-          } catch (err) {
+        } catch (err) {
             console.log(err);
-          }
+        }
     }
-    useEffect(()=>{
+    useEffect(() => {
         fetchUserDetails();
-    },[]);
+    }, []);
 
     return (
         <>
+            <Navbar />
             <div className="container border border-dark rounded mt-5" >
                 <div className={classes.mainBody}>
                     <div className={`row ${classes.guttersSm}`} >

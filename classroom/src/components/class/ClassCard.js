@@ -14,7 +14,7 @@ const ClassCard = ({classroom}) => {
           </div>
         </div>
         <div className="card-body" style={{ maxHeight: "550px" }}>
-          <h4 className="card-title">{classroom.owner._id}</h4>
+          <h4 className="card-title">{classroom.owner.name}</h4>
         </div>
       </div>
     </>

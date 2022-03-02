@@ -6,6 +6,7 @@ import UserAuthContext from "../../context/userContext/UserAuthContext";
 export default function SignUp() {
 
     const ctx = useContext(UserAuthContext);
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     // const [error, setError] = useState("");
@@ -24,7 +25,7 @@ export default function SignUp() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ UID: currentUser.user.uid, name: currentUser.user.email, email: currentUser.user.email })
+                    body: JSON.stringify({ UID: currentUser.user.uid, name: name, email: currentUser.user.email })
                 });
             navigate("/");
         }
@@ -40,6 +41,7 @@ export default function SignUp() {
             <div className="acontainer">
                 <form className="form d-flex flex-column align-items-center" method="post" onSubmit={handleSubmit}>
                     <h1>Sign Up</h1>
+                    <input type="text" id="name" name="name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Name" required />
                     <input type="email" id="email" name="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" required />
                     <input type="password" id="password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Password" required />                
                     <div>Already have an account ? &nbsp;<Link to="/">Log in</Link></div>

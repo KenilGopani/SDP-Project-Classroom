@@ -108,7 +108,7 @@ const ClassroomInfo = (props) => {
     }
 
     return (
-        <div className='col-8 h-100 p-2' style={{ overflowY: 'auto', height: '92%' }}>
+        <div className='col-12 h-100 p-2' style={{ overflowY: 'auto', height: '92%' }}>
             <div className='row p-0 m-0'>
                 <img src={require("../../static/group.ico")} className="img-fluid rounded-circle m-auto mt-2 col-11" alt="Not Found!" style={{ height: '200px', width: '270px' }} />
                 <button className="btn btn-danger col-1 h-25" onClick={props.closeFunction} ><span>&times;</span></button>

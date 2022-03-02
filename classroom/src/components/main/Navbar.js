@@ -24,7 +24,7 @@ export default function Navbar() {
             <JoinClass/>
             <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top" style={{ "backgroundColor": "#e3f2fd" }}>
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="#">Klassroom</a>
+                    <Link className="navbar-brand" to="/home">Klassroom</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -38,7 +38,7 @@ export default function Navbar() {
                             </li> */}
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle w-25" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    +
+                                <i className='fas fa-outdent' style={{"fontSize":"20px"}}/>
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><Link className="dropdown-item" to="/createclass">Create classroom</Link></li>
