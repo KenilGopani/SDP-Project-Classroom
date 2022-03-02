@@ -38,7 +38,7 @@ export default function Navbar() {
                             </li> */}
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle w-25" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i className='fas fa-outdent' style={{"fontSize":"20px"}}/>
+                                <i className='fas fa-outdent' style={{fontSize:"20px"}}/>
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><Link className="dropdown-item" to="/createclass">Create classroom</Link></li>
