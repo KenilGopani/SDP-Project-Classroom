@@ -44,7 +44,7 @@ export default function LogIn() {
     return (
         <>
             <div className="acontainer">
-                <form className="form" method="post" onSubmit={handleSubmit} >
+                <form className="form" method="post" onSubmit={handleSubmit} style={{background:'transparent'}}>
                     <h1>Log In</h1>
                     <h5 style={{ color: 'red', textAlign: 'center' }}>{ }</h5>
                     <input type="email" id="email" name="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" required />

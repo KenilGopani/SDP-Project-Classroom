@@ -75,9 +75,8 @@ const Assignment = () => {
             setSubmittedUsers(doneUser);
             // const notDoneUser = getDifference(currentClassroom.members, doneUser);
             // setNotSubmittedUsers(notDoneUser);
-            // console.log(allUser)
-            // console.log(doneUser);
-            // console.log(notDoneUser);
+            console.log(allUser)
+            console.log(doneUser);
         }
         catch (err) {
             console.log(err)
@@ -158,6 +157,7 @@ const Assignment = () => {
     const handleXYZ = () => {
         const notDoneUser = getDifference(currentClassroom.members, submittedUsers);
         setNotSubmittedUsers(notDoneUser);
+        console.log(notDoneUser);
     }
 
     return (
