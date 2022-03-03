@@ -1,6 +1,5 @@
 // import { async } from '@firebase/util';
 import React, { useState, useContext } from 'react'
-import GoogleButton from 'react-google-button';
 import { Link, useNavigate } from "react-router-dom";
 import UserAuthContext from "../../context/userContext/UserAuthContext";
 
@@ -20,7 +19,7 @@ export default function LogIn() {
         // setError("");
         try {
                 const temp = await ctx.LogIn(email, password);
-                console.log(temp);
+                // console.log(temp);
                 navigate('/home');
         }
          catch (err) {
