@@ -28,8 +28,8 @@ const CreateClass = () => {
     event.preventDefault();
     // console.log(className);
     // console.log(classDescription);
-    console.log(user.email);
-    console.log(user.uid);
+    // console.log(user.email);
+    // console.log(user.uid);
     try {
       const response = await fetch(
         "http://localhost:4099/api/classroom/createClassroom",

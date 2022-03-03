@@ -33,8 +33,8 @@ export default function JoinClass() {
         }
       );
       response = await response.json();
-      console.log(response)
-      console.log(response.classroom)
+      // console.log(response)
+      // console.log(response.classroom)
       setCurrentClassroom(response.classroom)
     }
     catch (err) {

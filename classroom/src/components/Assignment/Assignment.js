@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { auth, storage } from '../../firebase'
+import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import Navbar from '../main/Navbar'
 import UserAuthContext from '../../context/userContext/UserAuthContext'
@@ -17,11 +17,11 @@ const Assignment = () => {
     const [assignment, setAssignment] = useState(undefined);
     const [progress, setProgress] = useState(0);
 
-    const [allUser, setAllUser] = useState(currentClassroom.members);
+    // const [allUser, setAllUser] = useState(currentClassroom.members);
     const [submittedUsers, setSubmittedUsers] = useState([]);
     const [notSubmittedUsers, setNotSubmittedUsers] = useState([]);
 
-    const [currentSelectedMail,setCurrentSelectedMail] = useState('');
+    const [currentSelectedMail, setCurrentSelectedMail] = useState('');
     /**
      * 0 - not uploaded
      * 1 - uploading
@@ -53,7 +53,8 @@ const Assignment = () => {
     //     console.log(mySet1)
     //     // return mySet1;
     // }
-    useEffect(async () => {
+
+    let fetchAssignment = async () => {
         try {
             let response = await fetch(`http://localhost:4099/api/assignment/${id}`, {
                 method: 'GET',
@@ -68,19 +69,22 @@ const Assignment = () => {
                 setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
             }
             setAssignment(response.assignment);
-            console.log(response.assignment);
+            // console.log(response.assignment);
             let doneUser = response.assignment.submissions.map(submission => {
                 return { user: submission.userId, submissionLink: submission.SubmissionLink }
             });
             setSubmittedUsers(doneUser);
             // const notDoneUser = getDifference(currentClassroom.members, doneUser);
             // setNotSubmittedUsers(notDoneUser);
-            console.log(allUser)
-            console.log(doneUser);
+            // console.log(allUser)
+            // console.log(doneUser);
         }
         catch (err) {
             console.log(err)
         }
+    }
+    useEffect(() => {
+        fetchAssignment();
     }, []);
     const submitHandler = (event) => {
         event.preventDefault();
@@ -125,7 +129,7 @@ const Assignment = () => {
                     points: 0
                 })
             })
-            // response = await response.json()
+            response = await response.json()
             // console.log(response)
         }
         catch (err) {
@@ -147,7 +151,7 @@ const Assignment = () => {
                     className: currentClassroom.className,
                 })
             })
-            console.log("Mail send................")
+            // console.log("Mail send................")
         }
         catch (err) {
             console.log(err)
@@ -157,12 +161,12 @@ const Assignment = () => {
     const handleXYZ = () => {
         const notDoneUser = getDifference(currentClassroom.members, submittedUsers);
         setNotSubmittedUsers(notDoneUser);
-        console.log(notDoneUser);
+        // console.log(notDoneUser);
     }
 
     return (
         <>
-            <MailModal mailTo={currentSelectedMail}/>
+            <MailModal mailTo={currentSelectedMail} />
             <Navbar />
             <div className='container mt-3 p-5'>
                 <div className='p-3'>
@@ -209,8 +213,8 @@ const Assignment = () => {
                                             {submittedUsers.map(sUser => (
                                                 <li className='list-group-item row m-0 p-0' key={sUser.user._id}>
                                                     <p className='col-8 d-inline-block' >{sUser.user.name}</p>
-                                                    <a href={sUser.submissionLink} className="fa fa-file-text col-2 link-secondary" style={{ fontSize: '24px' }} target='_blank' />  
-                                                    <i className="fa fa-envelope col-2 link-secondary" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={()=>setCurrentSelectedMail(sUser.user.email)}/>
+                                                    <a href={sUser.submissionLink} className="fa fa-file-text col-2 link-secondary" style={{ fontSize: '24px' }} target='_blank' />
+                                                    <i className="fa fa-envelope col-2 link-secondary" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={() => setCurrentSelectedMail(sUser.user.email)} />
                                                 </li>
                                             ))}
                                         </ul>
@@ -225,7 +229,7 @@ const Assignment = () => {
                                             {notSubmittedUsers.map(nUser => (
                                                 <li className='list-group-item row m-0 p-0' key={nUser._id}>
                                                     <p className='col-10 d-inline-block' >{nUser.name}</p>
-                                                    <i className="fa fa-envelope link-secondary col-2" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={()=>setCurrentSelectedMail(nUser.user.email)} />
+                                                    <i className="fa fa-envelope link-secondary col-2" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={() => setCurrentSelectedMail(nUser.user.email)} />
                                                 </li>
                                             ))}
                                         </ul>

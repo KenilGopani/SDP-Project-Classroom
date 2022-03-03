@@ -1,6 +1,5 @@
 // import { async } from '@firebase/util';
 import React, { useState, useContext } from 'react'
-import GoogleButton from 'react-google-button';
 import { Link, useNavigate } from "react-router-dom";
 import UserAuthContext from "../../context/userContext/UserAuthContext";
 
@@ -20,24 +19,12 @@ export default function LogIn() {
         // setError("");
         try {
                 const temp = await ctx.LogIn(email, password);
-                console.log(temp);
+                // console.log(temp);
                 navigate('/home');
         }
          catch (err) {
             // setError(err.message);
             alert(err.message);
-            console.log(err.message);
-        }
-    }
-    const handleGoogleSign = async (event) => {
-        event.preventDefault();
-        try {
-            const temp = await ctx.googleSignIn()
-            console.log(temp);
-            // console.log(temp.UserImpl.accessToken);
-            // const json = await response.json();
-            navigate('/home');
-        } catch (err) {
             console.log(err.message);
         }
     }
@@ -55,10 +42,6 @@ export default function LogIn() {
                     <input type="submit" value="Log In" className="btn-large" />
                     <div className="link">
                         New Here ? &nbsp;<Link to="/signup">Sign Up</Link>
-                    </div>
-                    <hr />
-                    <div>
-                        <GoogleButton onClick={handleGoogleSign} style={{ 'margin': 'auto' }} />
                     </div>
                 </form>
             </div>

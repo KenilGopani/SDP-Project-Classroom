@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import UserAuthContext from '../../context/userContext/UserAuthContext'
 import ClasroomContext from '../../context/classContext/ClassroomContext'
-import { editableInputTypes } from '@testing-library/user-event/dist/utils'
 
 const ClassroomInfo = (props) => {
 
@@ -59,12 +58,12 @@ const ClassroomInfo = (props) => {
         }
     }
     const saveClickHandler = async () => {
-        console.log(`hit1`);
-        console.log(className);
-        console.log(classDescription);
-        if (currentClassroom.className == className && currentClassroom.description == classDescription)
+        // console.log(`hit1`);
+        // console.log(className);
+        // console.log(classDescription);
+        if (currentClassroom.className === className && currentClassroom.description === classDescription)
             return;
-        console.log(`hit2`);
+        // console.log(`hit2`);
         try {
             await fetch(
                 "http://localhost:4099/api/classroom/updateClassroomInfo",
@@ -97,8 +96,8 @@ const ClassroomInfo = (props) => {
     const closeClickHandler = () => {
         setClassName(currentClassroom.className);
         setClassDescription(currentClassroom.description);
-        console.log(className);
-        console.log(classDescription);
+        // console.log(className);
+        // console.log(classDescription);
         document.getElementById('close').style.display = 'none';
         document.getElementById('save').style.display = 'none';
         document.getElementById('cName').readOnly = true;
@@ -187,7 +186,7 @@ const ClassroomInfo = (props) => {
                 <img src={require("../../static/members.png")} className="img-fluid rounded-circle m-1 col-12" alt="Not Found!" style={{ height: '50px', width: '75px' }} />
                 <ul className="list-group h-75 overflow-auto m-auto p-0">
                     {currentClassroom.members.length === 0 && <div>No members</div>}
-                    {currentClassroom.members.length > 0 && currentClassroom.members.map((member) => <li className="list-group-item" >{member.name}</li>)}
+                    {currentClassroom.members.length > 0 && currentClassroom.members.map((member) => <li className="list-group-item" key={member.email}>{member.name}</li>)}
                 </ul>
             </div>
         </div>

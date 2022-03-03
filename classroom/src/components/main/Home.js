@@ -37,7 +37,7 @@ export default function Home() {
 
     const handleOnClick = (classroom) => {
         setCurrentClassroom(classroom)
-        console.log(classroom)
+        // console.log(classroom)
         navigate('/home/classroom');
     }
 

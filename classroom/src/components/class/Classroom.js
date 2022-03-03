@@ -15,7 +15,7 @@ const Classroom = () => {
 
   const toggle = () => {
     setShowProfile(prev => !prev);
-    console.log(showProfile);
+    // console.log(showProfile);
   }
 
   const fetchAllAssignment = async () => {
@@ -27,7 +27,7 @@ const Classroom = () => {
         }
       })
       response = await response.json();
-      console.log("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
+      // console.log("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
       setAssignments(response.assignments)
       // console.log(response.assignments)
     }
@@ -40,7 +40,7 @@ const Classroom = () => {
     fetchAllAssignment()
     // eslint-disable-next-line
 
-  }, [])
+  })
 
 
   return (
@@ -52,9 +52,9 @@ const Classroom = () => {
           {showProfile === true ? <ClassroomInfo closeFunction={toggle} /> :
             (<div className='col-12  h-100 p-0'>
               <div className='row mx-4 my-1 w-100' >
-                {
+                {/* {
                 console.log("1 user ",user.uid,"class own ", currentClassroom.owner.UID )
-                }
+                } */}
                 {user.uid === currentClassroom.owner.UID && (
                 <Link to={'/home/classroom/assignment'} className="btn btn-primary w-25 m-1" >Add Assignment</Link>)}
                 <button className="btn btn-primary w-25 m-1" onClick={toggle}>Classroom Profile</button>
