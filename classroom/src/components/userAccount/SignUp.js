@@ -38,8 +38,8 @@ export default function SignUp() {
 
     return (
         <>
-            <div className="acontainer">
-                <form className="form d-flex flex-column align-items-center" method="post" onSubmit={handleSubmit}>
+            <div className="acontainer ">
+                <form className="form d-flex flex-column align-items-center " method="post" onSubmit={handleSubmit} style={{background:'transparent'}}>
                     <h1>Sign Up</h1>
                     <input type="text" id="name" name="name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Name" required />
                     <input type="email" id="email" name="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" required />

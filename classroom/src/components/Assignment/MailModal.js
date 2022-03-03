@@ -35,7 +35,6 @@ const MailModal = (props) => {
                     <label htmlFor="mailMsg" className="form-label">Enter a Message : </label>
                     <textarea className="form-control h-auto" value={message} onChange={e => {setMessage(e.target.value)}} id="mailMsg" />
                 </div>
-                {console.log(props)}
                 <button type="button" disabled={message.length === 0} className="btn btn-primary shadow-none" onClick={handleOnClick}>Send</button>
             </Modal>
         </>
