@@ -29,18 +29,6 @@ export default function LogIn() {
             console.log(err.message);
         }
     }
-    const handleGoogleSign = async (event) => {
-        event.preventDefault();
-        try {
-            const temp = await ctx.googleSignIn()
-            console.log(temp);
-            // console.log(temp.UserImpl.accessToken);
-            // const json = await response.json();
-            navigate('/home');
-        } catch (err) {
-            console.log(err.message);
-        }
-    }
     return (
         <>
             <div className="acontainer">
@@ -55,10 +43,6 @@ export default function LogIn() {
                     <input type="submit" value="Log In" className="btn-large" />
                     <div className="link">
                         New Here ? &nbsp;<Link to="/signup">Sign Up</Link>
-                    </div>
-                    <hr />
-                    <div>
-                        <GoogleButton onClick={handleGoogleSign} style={{ 'margin': 'auto' }} />
                     </div>
                 </form>
             </div>
