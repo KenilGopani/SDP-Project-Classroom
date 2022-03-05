@@ -18,17 +18,20 @@ const SubmissionSchema = new mongoose.Schema({
         ref : 'Assignments',
         require : true
     },
+    submissionFileName : {
+        type : String,
+        require : true
+    },
     SubmissionLink : {
         type : String,
         require : true
     },
-    points : {
-        type : Number
-    },
     submissionDate : {
         type : Date,
         default : Date.now
+    },
+    points : {
+        type : Number
     }
-
 })
 module.exports = mongoose.model('Submissions',SubmissionSchema);

@@ -66,6 +66,7 @@ router.put('/submitAssignment', async (req, res) => {
             userId: user._id,
             classroomId: req.body.classroomId,
             assignmentId: req.body.assignmentId,
+            submissionFileName : req.body.submissionFileName,
             SubmissionLink: req.body.SubmissionLink,
             points: 0
         })
