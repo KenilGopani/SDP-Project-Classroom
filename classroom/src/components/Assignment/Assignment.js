@@ -172,15 +172,15 @@ const Assignment = () => {
                 <div className='p-3'>
                     <div className='row m-0'>
                         <Link to={'/home/classroom'} className='col-2 fa fa-arrow-left my-auto ' style={{ fontSize: '30px', color: 'black' }} />
-                        <h1 className='col-8 m-0 p-0 text-secondary text-center'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
+                        <h1 className='col-8 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
                     </div>
                     <hr />
-                    <h4>Description : </h4>
-                    <div className='row m-0 p-3 overflow-auto' style={{ maxHeight: '250px' }}>
+                    <h4 className="text-uppercase fs-5" style={{ fontWeight: '900'}}>Description : </h4>
+                    <div className='row m-0 p-3 overflow-auto fs-5' style={{ maxHeight: '250px', fontWeight: '500'}}>
                         {assignment && assignment.assignmentDescription}
                     </div>
                     <hr className='mx-0' />
-                    <div className="row">
+                    {currentClassroom.owner.UID != user.uid && <div className="row">
                         <form onSubmit={submitHandler} className="row">
                             <h5 htmlFor="formFile" className="form-label col-12">Submit Here : </h5>
                             <input className="form-control w-50 col-6" type="file" id="formFile" />
@@ -196,9 +196,9 @@ const Assignment = () => {
                                 &nbsp; {progress}%
                             </span>
                         </form>
-                    </div>
-                    <div className="row mt-3">
-                        <div className="card">
+                    </div>}
+                    {currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
+                        <div className="card p-0">
                             <div className="card-header" id="headingOne">
                                 <h2 className="mb-0">
                                     <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1" onClick={handleXYZ}>Submission Status</a>
@@ -207,9 +207,8 @@ const Assignment = () => {
                             <div className="collapse multi-collapse" id="multiCollapseExample1">
                                 <div className="card card-body">
                                     <div className='row'>
-                                        <h4><em>Submitted List :</em></h4>
-                                        <hr />
                                         <ul className='list-group'>
+                                            <h4 className="list-group-item list-group-item-dark"><em>Submitted List :</em></h4>
                                             {submittedUsers.map(sUser => (
                                                 <li className='list-group-item row m-0 p-0' key={sUser.user._id}>
                                                     <p className='col-8 d-inline-block' >{sUser.user.name}</p>
@@ -219,13 +218,13 @@ const Assignment = () => {
                                             ))}
                                         </ul>
                                     </div>
+                                    <br />
                                     <div className='row'>
-                                        <div className='row m-0 p-0'>
-                                            <h4 className='col-10 d-inline-block'><em>Pending List :</em></h4>
-                                            <button className='btn btn-primary col-2' onClick={reminderHandler}>Reminder</button>
-                                        </div>
-                                        <hr />
                                         <ul className='list-group'>
+                                            <div className='row m-0 p-0 list-group-item list-group-item-dark'>
+                                                <h4 className='col-10 d-inline-block'><em>Pending List :</em></h4>
+                                                <button className='btn btn-primary col-2 w-auto my-1' onClick={reminderHandler}>Reminder</button>
+                                            </div>
                                             {notSubmittedUsers.map(nUser => (
                                                 <li className='list-group-item row m-0 p-0' key={nUser._id}>
                                                     <p className='col-10 d-inline-block' >{nUser.name}</p>
@@ -237,7 +236,7 @@ const Assignment = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </>

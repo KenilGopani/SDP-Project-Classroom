@@ -92,8 +92,8 @@ router.get('/fetchAllClassrooms', async (req, res) => {
         res.json({ success: true, classrooms });
     }
     catch (error) {
-        console(error)
-        // res.status(500).send("Internal Server Error");
+        // console(error)
+        res.status(500).send("Internal Server Error");
     }
 
 })
