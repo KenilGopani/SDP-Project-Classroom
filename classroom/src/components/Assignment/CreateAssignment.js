@@ -56,7 +56,7 @@ const CreateAssignment = () => {
     if(currentFile.length === 0)
       return;
     setUploadState(1);
-    console.log(currentFile[0]);
+    // console.log(currentFile[0]);
     upload(currentFile[0]);
     document.getElementById('formFile').value = '';
   }
@@ -112,7 +112,7 @@ const CreateAssignment = () => {
                   </span>
                 </div>
                 <div className="d-flex">
-                  {allMaterials.map((material) => <ViewFile subName={material.materialName} subLink={material.materialLink} />)}
+                  {allMaterials.map((material) => <ViewFile key={material.materialLink} subName={material.materialName} subLink={material.materialLink} />)}
                 </div>
               </div>
               <button type="submit" className="btn btn-primary">Create</button>
