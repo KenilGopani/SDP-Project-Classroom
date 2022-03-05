@@ -43,12 +43,13 @@ const CreateAssignment = () => {
   return (
     <>
       <Navbar />
-      <div className="container mt-5 border border-dark rounded" style={{ maxWidth: "720px" }}>
-        <div className="row border-bottom border-dark">
-          <div className="col bg-primary text-white p-3">
-            <h3 className="text-center fw-bold">Create Assignment</h3>
+      <div className="container mt-5 w-50" >
+        <div className="row">
+          <div className="col">
+            <h1 className="text-center fw-bold">Create Assignment</h1>
           </div>
         </div>
+        <hr />
         <div className="row">
           <div className="col">
             <form onSubmit={onSubmitHandler}>

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import UserAuthContext from "../../context/userContext/UserAuthContext";
 import Navbar from "../main/Navbar";
 
@@ -55,74 +55,40 @@ const CreateClass = () => {
   return (
     <>
       <Navbar />
-      <div
-        className="container mt-5 border border-dark rounded"
-        style={{ maxWidth: "720px" }}
-      >
-        <div className="row border-bottom border-dark">
-          <div className="col bg-primary text-white p-3">
-            <h3 className="text-center fw-bold">Create ClassRoom</h3>
-          </div>
+      <div className="container mt-5 w-50">
+        <div className='row m-0'>
+          <Link to={'/home'} className='col-2 fa fa-arrow-left my-auto ' style={{ fontSize: '30px', color: 'black' }} />
+          <h1 className="col-8 my-auto">Create ClassRoom</h1>
         </div>
-        <div className="row">
-          <div className="col">
-            <form onSubmit={onSubmitHandler}>
-              <div className="form-group m-5">
-                <label className="form-label">ClassRoom Name : </label>
-                <input
-                  name="className"
-                  type="text"
-                  className="form-control"
-                  value={className}
-                  onChange={(event) => setclassName(event.target.value)}
-                />
-              </div>
-              <div className="form-group m-5">
-                <label className="form-label">ClassRoom Description : </label>
-                <textarea
-                  name="className"
-                  type="text"
-                  className="form-control"
-                  value={classDescription}
-                  onChange={(event) => setclassDescription(event.target.value)}
-                />
-              </div>
-              {/* <div className="container"> */}
-              <div className="row">
-                <div className="col-7">
-                  <div className="form-group m-5">
-                    <label className="form-label">
-                      Send classroom code via mail :
-                    </label>
-                    <input
-                      name="className"
-                      type="email"
-                      className="form-control"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                    />
-                    <button
-                      className="btn btn-primary mt-2"
-                      type="button"
-                      onClick={emailListHandler}
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
-                <div className="col-5">
-                  <ul className="list-group h-75 overflow-auto" id="emailList">
-                  </ul>
-                </div>
-              </div>
-              {/* </div> */}
-              <div className="col-12 ml-2">
-                <button className="btn btn-primary" type="submit">
-                  Create Class
-                </button>
-              </div>
-            </form>
-          </div>
+        <hr />
+        <div>
+          <form onSubmit={onSubmitHandler}>
+            <div className="form-group m-4">
+              <label className="form-label" htmlFor="cname">ClassRoom Name : </label>
+              <input
+                id="cname"
+                name="className"
+                type="text"
+                className="form-control"
+                value={className}
+                onChange={(event) => setclassName(event.target.value)}
+              />
+            </div>
+            <div className="form-group m-4">
+              <label className="form-label" htmlFor="cDesc">ClassRoom Description : </label>
+              <textarea name="className" type="text" className="form-control" id="cDesc" value={classDescription} onChange={(event) => setclassDescription(event.target.value)} />
+            </div>
+            <div className="form-group m-4">
+              <label className="form-label ml-3 d-block" htmlFor="cEmail"> Send classroom code via mail : </label>
+              <input name="className" type="email" className="form-control w-75 d-inline" value={email} onChange={(event) => setEmail(event.target.value)} id="cEmail" />
+              <button className="btn btn-primary mx-3" type="button" onClick={emailListHandler}>Add</button>
+              <ul className="list-group overflow-auto p-0 w-50 mt-1" id="emailList" style={{ maxHeight: '150px' }}></ul>
+            </div>
+            <div className=" form-group m-4 ">
+              <button className="btn btn-primary" type="submit">Create Class</button>
+            </div>
+
+          </form>
         </div>
       </div>
     </>
