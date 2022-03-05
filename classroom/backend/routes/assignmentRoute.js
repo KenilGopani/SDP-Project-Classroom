@@ -17,8 +17,25 @@ router.put('/createAssignment', async (req, res) => {
             owner: user._id,
             classroomId: req.body.classroomId
         })
+
+        await Assignment.findOneAndUpdate({_id : newAssignment._id}, {$push : {materials : req.body.materials}})
         const classroom = await Classroom.findOneAndUpdate({ _id: newAssignment.classroomId }, { $push: { assignments: newAssignment._id } })
-        res.send({ success: true, newAssignment })
+        res.send({ success: true, newAssignment})
+    }
+    catch (error) {
+        res.status(500).send("Internal server error")
+        // console.log(error)
+    }
+})
+
+router.delete('/deleteAssignment',async (req, res) => {
+    try {
+        // console.log(req.body.id);
+        const assignment = await Assignment.findOne({ _id : req.body.id });
+        const classroom = await Classroom.findOneAndUpdate({ _id: assignment.classroomId }, { $pull: { assignments: assignment._id } })
+        const submission = await Submission.deleteMany({assignmentId : req.body.id});
+        await Assignment.deleteOne({ _id : req.body.id })
+        res.send({success : 'true'});
     }
     catch (error) {
         res.status(500).send("Internal server error")

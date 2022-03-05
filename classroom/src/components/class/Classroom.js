@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import Navbar from '../main/Navbar'
 import ClassroomInfo from './ClassroomInfo'
-import AssignmentItem from '../Assignment/AssignmentItem'
+import AssignmentItem from '../assignment/AssignmentItem'
 import { Link } from 'react-router-dom'
 import ClassroomContext from '../../context/classContext/ClassroomContext'
 import UserAuthContext from '../../context/userContext/UserAuthContext'
