@@ -83,9 +83,12 @@ const Assignment = () => {
             console.log(err)
         }
     }
+
+
     useEffect(() => {
         fetchAssignment();
     }, []);
+
     const submitHandler = (event) => {
         event.preventDefault();
         setUploadState(1);
@@ -93,6 +96,8 @@ const Assignment = () => {
         uploadFile(file);
         document.getElementById('formFile').value = '';
     }
+
+
     const uploadFile = async (file) => {
         if (!file) {
             setUploadState(0);
@@ -110,11 +115,11 @@ const Assignment = () => {
                     setAssignmentUrl(url);
                     setUploadState(2);
                     setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
-                    uploadAssignmentInMongo(url); //own function (use 'url' insted setAssignmentUrl )
+                    uploadAssignmentInMongo(url, file.name); //own function (use 'url' insted setAssignmentUrl )
                 })
         });
     }
-    const uploadAssignmentInMongo = async (url) => {
+    const uploadAssignmentInMongo = async (url, fileName) => {
         try {
             let response = await fetch('http://localhost:4099/api/assignment/submitAssignment', {
                 method: 'PUT',
@@ -125,6 +130,7 @@ const Assignment = () => {
                     userUID: user.uid,
                     classroomId: currentClassroom._id,
                     assignmentId: id, //id that came from params
+                    submissionFileName : fileName,
                     SubmissionLink: url, // from the firebase
                     points: 0
                 })
