@@ -186,6 +186,11 @@ const Assignment = () => {
                         {assignment && assignment.assignmentDescription}
                     </div>
                     <hr className='mx-0' />
+                    <div className="d-flex">
+                  {assignment && assignment.materials.map((material) => <ViewFile key={material.materialLink} subName={material.materialName} subLink={material.materialLink} />)}
+                </div>
+                    <hr className='mx-0' />
+
                     {currentClassroom.owner.UID != user.uid && <div className="row">
                         <form onSubmit={submitHandler} className="row">
                             <h5 htmlFor="formFile" className="form-label col-12">Submit Here : </h5>
@@ -215,7 +220,7 @@ const Assignment = () => {
                                 <div className="card card-body">
                                     <div className='row'>
                                         <ul className='list-group'>
-                                            <h4 className="list-group-item list-group-item-dark"><em>Submitted List :</em></h4>
+                                            <h4 className="list-group-item list-group-item-dark"><em>Submitted List : {submittedUsers.length } / {submittedUsers.length + notSubmittedUsers.length}</em></h4>
                                             {submittedUsers.map(sUser => (
                                                 <li className='list-group-item row m-0 p-0' key={sUser.user._id}>
                                                     <p className='col-8 d-inline-block' >{sUser.user.name}</p>
@@ -229,7 +234,7 @@ const Assignment = () => {
                                     <div className='row'>
                                         <ul className='list-group'>
                                             <div className='row m-0 p-0 list-group-item list-group-item-dark'>
-                                                <h4 className='col-10 d-inline-block'><em>Pending List :</em></h4>
+                                                <h4 className='col-10 d-inline-block'><em>Pending List : {notSubmittedUsers.length} / {notSubmittedUsers.length + submittedUsers.length}</em></h4>
                                                 <button className='btn btn-primary col-2 w-auto my-1' onClick={reminderHandler}>Reminder</button>
                                             </div>
                                             {notSubmittedUsers.map(nUser => (
