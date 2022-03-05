@@ -5,7 +5,8 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import Navbar from '../main/Navbar'
 import UserAuthContext from '../../context/userContext/UserAuthContext'
 import ClassroomContext from '../../context/classContext/ClassroomContext'
-import MailModal from '../assignment/MailModal';
+import MailModal from './MailModal';
+import ViewFile from './ViewFile';
 
 const Assignment = () => {
     const { user } = useContext(UserAuthContext)
@@ -13,6 +14,7 @@ const Assignment = () => {
 
     const [tipTitle, setTipTitle] = useState('');
     const [assignmentUrl, setAssignmentUrl] = useState('');
+    const [submissionFileName, setSubmissionFileName] = useState('');
     const { id } = useParams();
     const [assignment, setAssignment] = useState(undefined);
     const [progress, setProgress] = useState(0);
@@ -65,6 +67,7 @@ const Assignment = () => {
             // console.log(submission);
             if (submission) {
                 setAssignmentUrl(submission.SubmissionLink);
+                setSubmissionFileName(submission.submissionFileName)
                 setUploadState(2);
                 setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
             }
@@ -83,21 +86,18 @@ const Assignment = () => {
             console.log(err)
         }
     }
-
-
     useEffect(() => {
         fetchAssignment();
     }, []);
-
     const submitHandler = (event) => {
         event.preventDefault();
         setUploadState(1);
         const file = event.target[0].files[0];
+        setSubmissionFileName(file.name);
+        // console.log(file);
         uploadFile(file);
         document.getElementById('formFile').value = '';
     }
-
-
     const uploadFile = async (file) => {
         if (!file) {
             setUploadState(0);
@@ -115,11 +115,11 @@ const Assignment = () => {
                     setAssignmentUrl(url);
                     setUploadState(2);
                     setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
-                    uploadAssignmentInMongo(url, file.name); //own function (use 'url' insted setAssignmentUrl )
+                    uploadAssignmentInMongo(url,file.name); //own function (use 'url' insted setAssignmentUrl )
                 })
         });
     }
-    const uploadAssignmentInMongo = async (url, fileName) => {
+    const uploadAssignmentInMongo = async (url,fileName) => {
         try {
             let response = await fetch('http://localhost:4099/api/assignment/submitAssignment', {
                 method: 'PUT',
@@ -130,7 +130,7 @@ const Assignment = () => {
                     userUID: user.uid,
                     classroomId: currentClassroom._id,
                     assignmentId: id, //id that came from params
-                    submissionFileName : fileName,
+                    submissionFileName: fileName,
                     SubmissionLink: url, // from the firebase
                     points: 0
                 })
@@ -196,12 +196,13 @@ const Assignment = () => {
                             <span className='mx-1 col-2 w-auto' data-toggle="tooltip" data-html="true" title="Cancel submission">
                                 <button className='btn btn-primary' ><i className="fa fa-close" /></button>
                             </span>
-                            <a className='btn btn-secondary mx-1 col-2' hidden={uploadState !== 2 ? true : false} href={assignmentUrl} target='_blank'><i className='fas fa-file-alt' />&nbsp; View</a>
+                            {/* <a className='btn btn-secondary mx-1 col-2' hidden={uploadState !== 2 ? true : false} href={assignmentUrl} target='_blank'><i className='fas fa-file-alt' />&nbsp; View</a> */}
                             <span className="col-2 border-0" hidden={uploadState === 1 ? false : true}>
                                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 &nbsp; {progress}%
                             </span>
                         </form>
+                        <div className='col-2' hidden={uploadState !== 2 ? true : false}><ViewFile subName={submissionFileName} subLink={assignmentUrl} /></div>
                     </div>}
                     {currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
                         <div className="card p-0">
