@@ -21,6 +21,10 @@ const AssignmentSchema = new mongoose.Schema({
         ref: 'Classrooms',
         require : true
     },
+    materials : [{
+        materialName : String,
+        materialLink : String
+    }],
     submissions : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Submissions',

@@ -10,8 +10,8 @@ import CreateClass from './components/class/CreateClass';
 import JoinClass from './components/class/JoinClass';
 import UserAuthProvider from "./context/userContext/UserAuthProvider";
 import ClassroomProvider from './context/classContext/ClassroomProvider'
-import CreateAssignment from './components/Assignment/CreateAssignment';
-import Assignment from './components/Assignment/Assignment';
+import CreateAssignment from './components/assignment/CreateAssignment';
+import Assignment from './components/assignment/Assignment';
 
 function App() {
   return (
