@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import Navbar from '../main/Navbar'
@@ -18,6 +18,7 @@ const Assignment = () => {
     const { id } = useParams();
     const [assignment, setAssignment] = useState(undefined);
     const [progress, setProgress] = useState(0);
+    const navigate = useNavigate()
 
     // const [allUser, setAllUser] = useState(currentClassroom.members);
     const [submittedUsers, setSubmittedUsers] = useState([]);
@@ -86,9 +87,11 @@ const Assignment = () => {
             console.log(err)
         }
     }
+
     useEffect(() => {
         fetchAssignment();
     }, []);
+
     const submitHandler = (event) => {
         event.preventDefault();
         setUploadState(1);
@@ -115,11 +118,11 @@ const Assignment = () => {
                     setAssignmentUrl(url);
                     setUploadState(2);
                     setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
-                    uploadAssignmentInMongo(url,file.name); //own function (use 'url' insted setAssignmentUrl )
+                    uploadAssignmentInMongo(url, file.name); //own function (use 'url' insted setAssignmentUrl )
                 })
         });
     }
-    const uploadAssignmentInMongo = async (url,fileName) => {
+    const uploadAssignmentInMongo = async (url, fileName) => {
         try {
             let response = await fetch('http://localhost:4099/api/assignment/submitAssignment', {
                 method: 'PUT',
@@ -170,6 +173,26 @@ const Assignment = () => {
         // console.log(notDoneUser);
     }
 
+    const handleDeleteAssignment = async () => {
+        try {
+            let res = await fetch('http://localhost:4099/api/assignment/deleteAssignment',
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id : id,
+                    }),
+                })
+            // console.log(res.json())
+            navigate('/home/classroom')
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <>
             <MailModal mailTo={currentSelectedMail} />
@@ -177,18 +200,20 @@ const Assignment = () => {
             <div className='container mt-3 p-5'>
                 <div className='p-3'>
                     <div className='row m-0'>
-                        <Link to={'/home/classroom'} className='col-2 fa fa-arrow-left my-auto ' style={{ fontSize: '30px', color: 'black' }} />
-                        <h1 className='col-8 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
+                        <Link to={'/home/classroom'} className='col-2 my-auto  fa fa-arrow-left' style={{ fontSize: '30px', color: 'black' }} />
+                        <h1 className='col-7 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
+                        {currentClassroom.owner.UID == user.uid && 
+                        (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
                     </div>
                     <hr />
-                    <h4 className="text-uppercase fs-5" style={{ fontWeight: '900'}}>Description : </h4>
-                    <div className='row m-0 p-3 overflow-auto fs-5' style={{ maxHeight: '250px', fontWeight: '500'}}>
+                    <h4 className="text-uppercase fs-5" style={{ fontWeight: '900' }}>Description : </h4>
+                    <div className='row m-0 p-3 overflow-auto fs-5' style={{ maxHeight: '250px', fontWeight: '500' }}>
                         {assignment && assignment.assignmentDescription}
                     </div>
                     <hr className='mx-0' />
                     <div className="d-flex">
-                  {assignment && assignment.materials.map((material) => <ViewFile key={material.materialLink} subName={material.materialName} subLink={material.materialLink} />)}
-                </div>
+                        {assignment && assignment.materials.map((material) => <ViewFile key={material.materialLink} subName={material.materialName} subLink={material.materialLink} />)}
+                    </div>
                     <hr className='mx-0' />
 
                     {currentClassroom.owner.UID != user.uid && <div className="row">
@@ -220,7 +245,7 @@ const Assignment = () => {
                                 <div className="card card-body">
                                     <div className='row'>
                                         <ul className='list-group'>
-                                            <h4 className="list-group-item list-group-item-dark"><em>Submitted List : {submittedUsers.length } / {submittedUsers.length + notSubmittedUsers.length}</em></h4>
+                                            <h4 className="list-group-item list-group-item-dark"><em>Submitted List : {submittedUsers.length} / {submittedUsers.length + notSubmittedUsers.length}</em></h4>
                                             {submittedUsers.map(sUser => (
                                                 <li className='list-group-item row m-0 p-0' key={sUser.user._id}>
                                                     <p className='col-8 d-inline-block' >{sUser.user.name}</p>
