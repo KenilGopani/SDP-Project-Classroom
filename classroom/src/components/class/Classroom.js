@@ -46,7 +46,7 @@ const Classroom = () => {
   return (
     <div>
       <Navbar />
-      <div className="container-fluid overflow-hidden p-0" style={{ height: '92vh' }}>
+      <div className="container overflow-hidden p-0" style={{ height: '92vh' }}>
         <div className='row h-100 m-2'>
 
           {showProfile === true ? <ClassroomInfo closeFunction={toggle} /> :
