@@ -7,6 +7,7 @@ import UserAuthContext from '../../context/userContext/UserAuthContext'
 import ClassroomContext from '../../context/classContext/ClassroomContext'
 import MailModal from './MailModal';
 import ViewFile from './ViewFile';
+import { DatasetController } from 'chart.js'
 
 const Assignment = () => {
     const { user } = useContext(UserAuthContext)
@@ -15,6 +16,8 @@ const Assignment = () => {
     const [tipTitle, setTipTitle] = useState('');
     const [assignmentUrl, setAssignmentUrl] = useState('');
     const [submissionFileName, setSubmissionFileName] = useState('');
+    const [assignmentDeadLine, setAssignmentDeadLine] = useState(new Date("0"));
+
     const { id } = useParams();
     const [assignment, setAssignment] = useState(undefined);
     const [progress, setProgress] = useState(0);
@@ -73,6 +76,8 @@ const Assignment = () => {
                 setTipTitle('You have already submitted, Please cancel the previous submission to submit new assignment.');
             }
             setAssignment(response.assignment);
+            // console.log(assignmentDeadLine)
+            setAssignmentDeadLine(new Date(response.assignment?.deadLine))
             // console.log(response.assignment);
             let doneUser = response.assignment.submissions.map(submission => {
                 return { user: submission.userId, submissionLink: submission.SubmissionLink }
@@ -204,6 +209,8 @@ const Assignment = () => {
                         <h1 className='col-7 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
                         {currentClassroom.owner.UID == user.uid && 
                         (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
+                        {/* <p>Dead Line::-  {new Date((assignment?.deadLine)).getDate()} / {new Date((assignment?.deadLine)).getMonth()+1} / {new Date((assignment?.deadLine)).getFullYear()}</p> */}
+                        <p>Dead Line::-  { (+assignmentDeadLine != +(new Date("0"))) && (assignmentDeadLine).getDate()} / {(assignmentDeadLine).getMonth()+1} / {(assignmentDeadLine).getFullYear()}</p>
                     </div>
                     <hr />
                     <h4 className="text-uppercase fs-5" style={{ fontWeight: '900' }}>Description : </h4>

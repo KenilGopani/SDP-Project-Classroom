@@ -21,6 +21,9 @@ const AssignmentSchema = new mongoose.Schema({
         ref: 'Classrooms',
         require : true
     },
+    deadLine : {
+        type : Date
+    },
     materials : [{
         materialName : String,
         materialLink : String
