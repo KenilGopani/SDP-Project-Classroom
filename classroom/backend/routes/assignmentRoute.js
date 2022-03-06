@@ -10,12 +10,21 @@ router.put('/createAssignment', async (req, res) => {
 
     try {
         const user = await User.findOne({ UID: req.body.UID })
-
+        let deadLine = new Date(req.body.deadLine)
+        // let deadLine; 
+        // if(!req.body.deadLine){
+        //     deadLine = new Date(req.body.deadLine)
+        //     console.log("21121")
+        // }
+        // else{
+        //     deadLine = new Date("2000-01-01")
+        // }
         let newAssignment = await Assignment.create({
             assignmentName: req.body.assignmentName,
             assignmentDescription: req.body.assignmentDescription,
             owner: user._id,
-            classroomId: req.body.classroomId
+            classroomId: req.body.classroomId,
+            deadLine : deadLine
         })
 
         await Assignment.findOneAndUpdate({_id : newAssignment._id}, {$push : {materials : req.body.materials}})
@@ -23,8 +32,8 @@ router.put('/createAssignment', async (req, res) => {
         res.send({ success: true, newAssignment})
     }
     catch (error) {
-        res.status(500).send("Internal server error")
-        // console.log(error)
+        // res.status(500).send("Internal server error")
+        console.log(error)
     }
 })
 

@@ -17,10 +17,12 @@ const CreateAssignment = () => {
 
   const [assignmentName, setAssignmetName] = useState("")
   const [assignmentDescription, setAssignmetDescription] = useState("")
+  const [assignmentDeadLine, setAssignmetDeadLine] = useState("")
+
   const navigate = useNavigate()
 
   const [allMaterials, setAllMaterials] = useState([]);
-  const [currentFile,setCurrentFile] = useState(null);
+  const [currentFile, setCurrentFile] = useState(null);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -29,7 +31,7 @@ const CreateAssignment = () => {
       // console.log(user.uid)
       // console.log(currentClassroom._id)
 
-      let res = await fetch('http://localhost:4099/api/assignment/createAssignment',
+      let response = await fetch('http://localhost:4099/api/assignment/createAssignment',
         {
           method: "PUT",
           headers: {
@@ -40,10 +42,12 @@ const CreateAssignment = () => {
             assignmentDescription: assignmentDescription,
             UID: user.uid,
             classroomId: currentClassroom._id,
+            deadLine : assignmentDeadLine,
             materials: allMaterials,
           }),
         })
-      // console.log(res)
+      response = await response.json()
+      // console.log(response)
       navigate('/home/classroom')
     }
     catch (err) {
@@ -53,7 +57,7 @@ const CreateAssignment = () => {
   }
 
   const uploadFile = () => {
-    if(currentFile.length === 0)
+    if (currentFile.length === 0)
       return;
     setUploadState(1);
     // console.log(currentFile[0]);
@@ -101,10 +105,16 @@ const CreateAssignment = () => {
                   name="description" value={assignmentDescription} onChange={(event) => setAssignmetDescription(event.target.value)}
                 />
               </div>
+
+              <div className="mb-3">
+                <label htmlFor="DeadLine">DeadLine:</label>
+                <input className="m-0" type="datetime-local" id="DeadLine" name="DeadLine" value={assignmentDeadLine} onChange={(event)=>setAssignmetDeadLine(event.target.value)}/>
+              </div>
+
               <div className="m-2 ">
                 <div className="row">
                   <label htmlFor="formFile" className="form-label col-12">Attach Materials : </label>
-                  <input className="form-control w-50 col-6" id="formFile" type="file" onChange={(e)=>setCurrentFile(e.target.files)} />
+                  <input className="form-control w-50 col-6" id="formFile" type="file" onChange={(e) => setCurrentFile(e.target.files)} />
                   <button className='btn btn-primary mx-1 col-2 w-auto' type='button' disabled={uploadState === 1 ? true : false} onClick={uploadFile}><i className="fa fa-upload" /></button>
                   <span className="col-2 border-0" hidden={uploadState === 1 ? false : true}>
                     <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
