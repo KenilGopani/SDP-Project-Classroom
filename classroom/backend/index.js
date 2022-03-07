@@ -15,6 +15,7 @@ app.use(express.json())
 app.use('/api/auth', require('./routes/authRoute')),
 app.use('/api/classroom', require('./routes/classroomRoute')),
 app.use('/api/assignment', require('./routes/assignmentRoute'))
+app.use('/api/admin', require('./routes/adminRoute'))
 
 app.listen(port, () => {
     console.log(`Classroom listening at http://localhost:${port}`)

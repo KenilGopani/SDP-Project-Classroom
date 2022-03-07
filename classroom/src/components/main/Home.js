@@ -33,7 +33,7 @@ export default function Home() {
         fetchAllGroups();
         // console.log(classrooms)
         // eslint-disable-next-line
-    },[]);
+    }, []);
 
     const handleOnClick = (classroom) => {
         setCurrentClassroom(classroom)
@@ -43,24 +43,32 @@ export default function Home() {
 
     return (
         <>
-            <Navbar />
-            <div className="container">
-                <div className="row flex-wrap">
-                    {classrooms.length === 0 && (
-                        <div>
-                            <span>You haven't joined any Classroom</span>
-                        </div>
-                    )}
-                    {classrooms.length > 0 && classrooms.map((classroom) => {
+            {(
+                user?.email == "klassroom0246@gmail.com" && navigate('/admin')
+            )}
+            {(
+                user?.email != "klassroom0246@gmail.com" &&
+                <>
+                    <Navbar />
+                    <div className="container">
+                        <div className="row flex-wrap">
+                            {classrooms.length === 0 && (
+                                <div>
+                                    <span>You haven't joined any Classroom</span>
+                                </div>
+                            )}
+                            {classrooms.length > 0 && classrooms.map((classroom) => {
 
-                        return (
-                            <div className="col-lg-4 col-md-6 col-12" onClick={() => handleOnClick(classroom)} key={classroom._id}>
-                                <ClassCard classroom = {classroom}/>
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
+                                return (
+                                    <div className="col-lg-4 col-md-6 col-12" onClick={() => handleOnClick(classroom)} key={classroom._id}>
+                                        <ClassCard classroom={classroom} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </>
+            )}
         </>
     );
 }
