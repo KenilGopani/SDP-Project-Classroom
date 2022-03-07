@@ -48,8 +48,8 @@ export default function Navbar() {
                         </ul>
                         {/* <form className="d-flex"> */}
                         <input className="form-control me-2 w-25" type="search" placeholder="Search" aria-label="Search" />
-                        <Link to={'/profile'} ><img src={require("../../static/profile.png")} className="img-fluid" alt="profile" style={{height:'50px', width:'50px'}} /></Link>
-                        <button className="btn btn-primary" onClick={logoutHandler}> LogOut</button>
+                        <Link to={'/profile'} className="fas fa-user-circle display-6 mx-2" />
+                        <button className="btn btn-primary fas fa-sign-out-alt" onClick={logoutHandler}> LogOut</button>
                         {/* </form> */}
                     </div>
                 </div>

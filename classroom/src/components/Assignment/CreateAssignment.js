@@ -83,7 +83,7 @@ const CreateAssignment = () => {
   return (
     <>
       <Navbar />
-      <div className="container mt-5 w-50" >
+      <div className="container w-50" >
         <div className="row">
           <div className="col">
             <h1 className="text-center fw-bold">Create Assignment</h1>
