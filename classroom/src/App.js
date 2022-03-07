@@ -12,6 +12,8 @@ import UserAuthProvider from "./context/userContext/UserAuthProvider";
 import ClassroomProvider from './context/classContext/ClassroomProvider'
 import CreateAssignment from './components/assignment/CreateAssignment';
 import Assignment from './components/assignment/Assignment';
+import Admin from './components/admin/Admin';
+import ViewUser from './components/admin/ViewUser';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route exact path="/home/classroom/viewassignment/:id" element={<Assignment />} />
           <Route exact path="/createClass" element={<CreateClass />} />
           <Route exact path="/joinClass" element={<JoinClass />} />
+          <Route exact path="/admin" element={<Admin />} />
+          <Route exact path="/admin/viewuser/:id" element={<ViewUser/>}/>
         </Routes>
       </ClassroomProvider>
     </UserAuthProvider>
