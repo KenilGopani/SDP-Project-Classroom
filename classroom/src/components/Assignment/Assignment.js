@@ -7,9 +7,11 @@ import UserAuthContext from '../../context/userContext/UserAuthContext'
 import ClassroomContext from '../../context/classContext/ClassroomContext'
 import MailModal from './MailModal';
 import ViewFile from './ViewFile';
-import { DatasetController } from 'chart.js'
+import { Chart, ArcElement } from 'chart.js'
+import { Pie } from 'react-chartjs-2'
 
 const Assignment = () => {
+    Chart.register(ArcElement);
     const { user } = useContext(UserAuthContext)
     const { currentClassroom } = useContext(ClassroomContext)
 
@@ -28,13 +30,14 @@ const Assignment = () => {
     const [notSubmittedUsers, setNotSubmittedUsers] = useState([]);
 
     const [currentSelectedMail, setCurrentSelectedMail] = useState('');
+
     /**
      * 0 - not uploaded
      * 1 - uploading
      * 2 - uploaded
      */
     const [uploadState, setUploadState] = useState(0);
-
+    
     function getDifference(array1, array2) {
         return array1.filter(object1 => {
             return !array2.some(object2 => {
@@ -83,8 +86,8 @@ const Assignment = () => {
                 return { user: submission.userId, submissionLink: submission.SubmissionLink }
             });
             setSubmittedUsers(doneUser);
-            // const notDoneUser = getDifference(currentClassroom.members, doneUser);
-            // setNotSubmittedUsers(notDoneUser);
+            const notDoneUser = getDifference(currentClassroom.members, doneUser);
+            setNotSubmittedUsers(notDoneUser);
             // console.log(allUser)
             // console.log(doneUser);
         }
@@ -96,6 +99,19 @@ const Assignment = () => {
     useEffect(() => {
         fetchAssignment();
     }, []);
+
+    const pieData = {
+        labels: ['Submitted', 'Not Submitted'],
+        datasets: [{
+            label: 'Number of submissions',
+            data: [submittedUsers.length, notSubmittedUsers.length],
+            backgroundColor: [
+                'rgb(54, 162, 235)',
+                'rgb(238, 75, 43)'
+            ],
+            hoverOffset: 4
+        }]
+    };
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -172,11 +188,11 @@ const Assignment = () => {
         }
     }
 
-    const handleXYZ = () => {
-        const notDoneUser = getDifference(currentClassroom.members, submittedUsers);
-        setNotSubmittedUsers(notDoneUser);
-        // console.log(notDoneUser);
-    }
+    // const handleXYZ = () => {
+    //     const notDoneUser = getDifference(currentClassroom.members, submittedUsers);
+    //     setNotSubmittedUsers(notDoneUser);
+    //     // console.log(notDoneUser);
+    // }
 
     const handleDeleteAssignment = async () => {
         try {
@@ -187,7 +203,7 @@ const Assignment = () => {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        id : id,
+                        id: id,
                     }),
                 })
             // console.log(res.json())
@@ -202,15 +218,15 @@ const Assignment = () => {
         <>
             <MailModal mailTo={currentSelectedMail} />
             <Navbar />
-            <div className='container mt-3 p-5'>
+            <div className='container mt-3 w-75'>
                 <div className='p-3'>
                     <div className='row m-0'>
                         <Link to={'/home/classroom'} className='col-2 my-auto  fa fa-arrow-left' style={{ fontSize: '30px', color: 'black' }} />
                         <h1 className='col-7 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
-                        {currentClassroom.owner.UID == user.uid && 
-                        (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
+                        {currentClassroom.owner.UID == user.uid &&
+                            (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
                         {/* <p>Dead Line::-  {new Date((assignment?.deadLine)).getDate()} / {new Date((assignment?.deadLine)).getMonth()+1} / {new Date((assignment?.deadLine)).getFullYear()}</p> */}
-                        <p>Dead Line::-  { (+assignmentDeadLine != +(new Date("0"))) && (assignmentDeadLine).getDate()} / {(assignmentDeadLine).getMonth()+1} / {(assignmentDeadLine).getFullYear()}</p>
+                        <p className='font-monospace'>Dead Line :-  {(+assignmentDeadLine != +(new Date("0"))) && (assignmentDeadLine).getDate()} / {(assignmentDeadLine).getMonth() + 1} / {(assignmentDeadLine).getFullYear()}</p>
                     </div>
                     <hr />
                     <h4 className="text-uppercase fs-5" style={{ fontWeight: '900' }}>Description : </h4>
@@ -241,11 +257,14 @@ const Assignment = () => {
                         </form>
                         <div className='col-2' hidden={uploadState !== 2 ? true : false}><ViewFile subName={submissionFileName} subLink={assignmentUrl} /></div>
                     </div>}
+                    {currentClassroom.owner.UID == user.uid && <div className='row mt-3' style={{ height: '300px', width: '300px', margin: '0 auto' }}>
+                        <Pie data={pieData} />
+                    </div>}
                     {currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
                         <div className="card p-0">
                             <div className="card-header" id="headingOne">
                                 <h2 className="mb-0">
-                                    <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1" onClick={handleXYZ}>Submission Status</a>
+                                    <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1" >Submission Status</a>
                                 </h2>
                             </div>
                             <div className="collapse multi-collapse" id="multiCollapseExample1">

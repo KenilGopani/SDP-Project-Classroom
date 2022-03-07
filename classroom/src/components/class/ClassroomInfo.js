@@ -88,6 +88,7 @@ const ClassroomInfo = (props) => {
             document.getElementById('save').style.display = 'none';
             document.getElementById('cName').readOnly = true;
             document.getElementById('cDesc').readOnly = true;
+            document.getElementById('saveCancelDiv').style.display = 'none';
         } catch (err) {
             console.log(err);
         }
@@ -104,23 +105,25 @@ const ClassroomInfo = (props) => {
         document.getElementById('cDesc').readOnly = true;
         document.getElementById('cName').value = className;
         document.getElementById('cDesc').value = classDescription;
+        document.getElementById('saveCancelDiv').style.display = 'none';
     }
 
     return (
-        <div className='col-12 h-100 p-2' style={{ overflowY: 'auto', height: '92%' }}>
+        <div className='container p-2' style={{ overflowY: 'auto', maxHeight: '88vh' }}>
             <div className='row p-0 m-0'>
                 <img src={require("../../static/group.ico")} className="img-fluid rounded-circle m-auto mt-2 col-11" alt="Not Found!" style={{ height: '200px', width: '270px' }} />
-                <button className="btn btn-danger col-1 h-25" onClick={props.closeFunction} ><span>&times;</span></button>
+                {/* <button className="btn btn-danger col-1 h-25" onClick={props.closeFunction} ><span>&times;</span></button> */}
                 <h2 className='fs-5'>{currentClassroom.owner.name}</h2>
             </div>
             <hr />
-            <div className='container'>
-                <div className='row p-0 m-0'>
-                    <label className="col-2 h5 m-auto">Name : </label>
-                    <input className='col-8 m-auto w-75 form-control' id='cName' onChange={(event) => {
+            <div className='row m-0 p-0'>
+                <div className='row p-0 m-0 form-group'>
+                    <label className="col-2 h5 m-auto p-0">Name:</label>
+                    <input className='col-7 m-auto w-75 form-control ' id='cName' onChange={(event) => {
                         setClassName(event.target.value);
-                    }} readOnly={true} value={className} style={{background:'transparent'}}/>
+                    }} readOnly={true} value={className} style={{ background: 'transparent' }} />
                     <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
+                        document.getElementById('saveCancelDiv').style.display = 'block';
                         const cName = document.getElementById('cName');
                         document.getElementById('close').style.display = 'block';
                         document.getElementById('save').style.display = 'block';
@@ -128,13 +131,15 @@ const ClassroomInfo = (props) => {
                         cName.focus();
                     }} />
                 </div>
-                <hr />
+                <hr className='mt-3' />
                 <div className='row p-0 m-0 form-group'>
-                    <label className="col-2 h5 m-auto">Description : </label>
-                    <textarea className='col-8 fs-5 m-auto fw-normal w-75 form-control' id='cDesc' onChange={(event) => {
+                    <label className="col-12 h5 m-auto p-0">Description:</label>
+                    <div className='col-2 h5 p-0' />
+                    <textarea className='col-7 fs-5 m-auto fw-normal w-75 form-control' id='cDesc' onChange={(event) => {
                         setClassDescription(event.target.value)
-                    }} readOnly={true} value={classDescription} style={{height:'120px',background:'transparent'}}/>
+                    }} readOnly={true} value={classDescription} style={{ height: '120px', background: 'transparent' }} />
                     <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
+                        document.getElementById('saveCancelDiv').style.display = 'block';
                         const cDesc = document.getElementById('cDesc');
                         document.getElementById('close').style.display = 'block';
                         document.getElementById('save').style.display = 'block';
@@ -142,25 +147,27 @@ const ClassroomInfo = (props) => {
                         cDesc.focus();
                     }} />
                 </div>
-                <div className='d-flex justify-content-end m-5' >
-                    <i className="fa fa-save m-2" id='save' style={{ fontSize: '26px', display: 'none' }} onClick={saveClickHandler} />
-                    <i className="fa fa-close m-2" id='close' style={{ fontSize: '26px', display: 'none' }} onClick={closeClickHandler} />
+                <div className='row form-group' id="saveCancelDiv" style={{ display: 'none' }}>
+                    <div className='col-12 d-flex justify-content-end mt-2' >
+                        <i className="fa fa-save m-2" id='save' style={{ fontSize: '26px', display: 'none' }} onClick={saveClickHandler} />
+                        <i className="fa fa-close m-2" id='close' style={{ fontSize: '26px', display: 'none' }} onClick={closeClickHandler} />
+                    </div>
+                    <p className='col-12 alert alert-success' id='savemsg' style={{ display: 'none' }}>Updated...</p>
                 </div>
-                <p className='alert alert-success' id='savemsg' style={{ display: 'none' }}>Updated...</p>
+            </div>
+            <hr />
+            <div className='row p-0 m-0'>
+                <label className="col h5 m-auto">Class Code : </label>
+                <p className='col fs-5 m-auto fw-normal'>{currentClassroom.classCode}</p>
             </div>
             <hr />
             <div>
-                <div className='row p-0 m-0'>
-                    <label className="col-4 h5 m-auto">Class Code : </label>
-                    <p className='col-8 fs-5 m-auto fw-normal'>{currentClassroom.classCode}</p>
-                </div>
-                <hr />
                 {/* {console.log("user")}
                 {console.log(user.uid)} 
                 {console.log("class ow")}
                 {console.log(currentClassroom.owner.UID)} */}
                 {user.uid === currentClassroom.owner.UID && <div className='row p-2 m-0'>
-                    <button className="btn btn-secondary w-25 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button className="btn btn-secondary w-auto mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         Send Invitation
                     </button>
                     <div className="collapse" id="collapseExample">
@@ -168,8 +175,8 @@ const ClassroomInfo = (props) => {
                         {/* <label className="form-label">Send classroom code via mail :</label> */}
                         <div className='d-flex justify-content-between'>
                             <input name="className" type="email" className="w-75" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Enter email..." />
-                            <button className="btn btn-primary m-auto p-6" style={{ width: '100px' }} type="button" onClick={emailListHandler}>Add</button>
-                            <button className="btn btn-primary m-auto p-6" style={{ width: '100px' }} type="button" onClick={sendEmailHandler}>Send</button>
+                            <button className="btn btn-primary w-auto h-auto my-3 mx-1"  type="button" onClick={emailListHandler}>Add</button>
+                            <button className="btn btn-primary w-auto h-auto my-3 mx-1"  type="button" onClick={sendEmailHandler}>Send</button>
                         </div>
                         <div className='d-flex flex-column'>
                             <ul className="list-group overflow-auto p-0" id="emailList" style={{ maxHeight: '200px' }}>
@@ -183,7 +190,8 @@ const ClassroomInfo = (props) => {
             </div>
             <hr />
             <div className='row p-2 m-0'>
-                <img src={require("../../static/members.png")} className="img-fluid rounded-circle m-1 col-12" alt="Not Found!" style={{ height: '50px', width: '75px' }} />
+                {/* <img src={require("../../static/members.png")} className="img-fluid rounded-circle m-1 col-12" alt="Not Found!" style={{ height: '50px', width: '75px' }} /> */}
+                <i className='fas fa-users display-6'>Members</i>
                 <ul className="list-group h-75 overflow-auto m-auto p-0">
                     {currentClassroom.members.length === 0 && <div>No members</div>}
                     {currentClassroom.members.length > 0 && currentClassroom.members.map((member) => <li className="list-group-item" key={member.email}>{member.name}</li>)}
