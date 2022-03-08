@@ -7,11 +7,9 @@ import UserAuthContext from '../../context/userContext/UserAuthContext'
 import ClassroomContext from '../../context/classContext/ClassroomContext'
 import MailModal from './MailModal';
 import ViewFile from './ViewFile';
-import { Chart, ArcElement } from 'chart.js'
-import { Pie } from 'react-chartjs-2'
+import PieChart from './PieChart'
 
 const Assignment = () => {
-    Chart.register(ArcElement);
     const { user } = useContext(UserAuthContext)
     const { currentClassroom } = useContext(ClassroomContext)
 
@@ -257,8 +255,9 @@ const Assignment = () => {
                         </form>
                         <div className='col-2' hidden={uploadState !== 2 ? true : false}><ViewFile subName={submissionFileName} subLink={assignmentUrl} /></div>
                     </div>}
-                    {currentClassroom.owner.UID == user.uid && <div className='row mt-3' style={{ height: '300px', width: '300px', margin: '0 auto' }}>
-                        <Pie data={pieData} />
+                    {currentClassroom.owner.UID == user.uid && <div className='row mt-3'>
+                        {/* <Pie data={pieData} /> */}
+                        <PieChart submittedUsersLength={submittedUsers.length} notSubmittedUsersLength={notSubmittedUsers.length} />
                     </div>}
                     {currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
                         <div className="card p-0">
