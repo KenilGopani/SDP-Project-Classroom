@@ -10,26 +10,26 @@ router.put('/createAssignment', async (req, res) => {
 
     try {
         const user = await User.findOne({ UID: req.body.UID })
-        let deadLine = new Date(req.body.deadLine)
-        // let deadLine; 
-        // if(!req.body.deadLine){
-        //     deadLine = new Date(req.body.deadLine)
-        //     console.log("21121")
-        // }
-        // else{
-        //     deadLine = new Date("2000-01-01")
-        // }
+        // let deadLine = new Date(req.body.deadLine)
+        let deadLine;
+        if (req.body.deadLine) {
+            deadLine = new Date(req.body.deadLine)
+            console.log("21121")
+        }
+        else {
+            deadLine = new Date("2000-01-01")
+        }
         let newAssignment = await Assignment.create({
             assignmentName: req.body.assignmentName,
             assignmentDescription: req.body.assignmentDescription,
             owner: user._id,
             classroomId: req.body.classroomId,
-            deadLine : deadLine
+            deadLine: deadLine
         })
 
-        await Assignment.findOneAndUpdate({_id : newAssignment._id}, {$push : {materials : req.body.materials}})
+        await Assignment.findOneAndUpdate({ _id: newAssignment._id }, { $push: { materials: req.body.materials } })
         const classroom = await Classroom.findOneAndUpdate({ _id: newAssignment.classroomId }, { $push: { assignments: newAssignment._id } })
-        res.send({ success: true, newAssignment})
+        res.send({ success: true, newAssignment })
     }
     catch (error) {
         // res.status(500).send("Internal server error")
@@ -37,14 +37,14 @@ router.put('/createAssignment', async (req, res) => {
     }
 })
 
-router.delete('/deleteAssignment',async (req, res) => {
+router.delete('/deleteAssignment', async (req, res) => {
     try {
         // console.log(req.body.id);
-        const assignment = await Assignment.findOne({ _id : req.body.id });
+        const assignment = await Assignment.findOne({ _id: req.body.id });
         const classroom = await Classroom.findOneAndUpdate({ _id: assignment.classroomId }, { $pull: { assignments: assignment._id } })
-        const submission = await Submission.deleteMany({assignmentId : req.body.id});
-        await Assignment.deleteOne({ _id : req.body.id })
-        res.send({success : 'true'});
+        const submission = await Submission.deleteMany({ assignmentId: req.body.id });
+        await Assignment.deleteOne({ _id: req.body.id })
+        res.send({ success: 'true' });
     }
     catch (error) {
         res.status(500).send("Internal server error")
@@ -92,7 +92,7 @@ router.put('/submitAssignment', async (req, res) => {
             userId: user._id,
             classroomId: req.body.classroomId,
             assignmentId: req.body.assignmentId,
-            submissionFileName : req.body.submissionFileName,
+            submissionFileName: req.body.submissionFileName,
             SubmissionLink: req.body.SubmissionLink,
             points: 0
         })
@@ -105,30 +105,30 @@ router.put('/submitAssignment', async (req, res) => {
     }
 })
 
-router.put('/reminder',async (req, res) => {
-    try{
+router.put('/reminder', async (req, res) => {
+    try {
         let msg = `Hello user, <br><br> You have not submitted ${req.body.assignmentName} assignment of ${req.body.className} classroom. Submit it soon. <br>`
         console.log(req.body.list)
         sendMail(req.body.list, msg);
         console.log("krish: Remainder mail sent");
-        res.json({ success: true})
+        res.json({ success: true })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         res.status(500).send("Internal Server Error");
 
     }
 })
 
-router.put('/personalMail',async (req, res) => {
-    try{
+router.put('/personalMail', async (req, res) => {
+    try {
         let msg = `Hello, <br><br> ${req.body.message}<br>`
         console.log(req.body.list)
         sendMail(req.body.list, msg);
         console.log("krish: Remainder mail sent");
-        res.json({ success: true})
+        res.json({ success: true })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         res.status(500).send("Internal Server Error");
 

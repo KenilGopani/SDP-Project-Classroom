@@ -34,11 +34,11 @@ const Classroom = () => {
     fetchAllAssignment()
     // eslint-disable-next-line
 
-  })
+  }, [])
 
 
   return (
-    <div className='overflow-hidden' style={{maxHeight:'100vh'}}>
+    <div className='overflow-hidden' style={{ maxHeight: '100vh' }}>
       <Navbar />
       <div className="container-fluid overflow-hidden p-0" >
         <div className='row h-100 m-2'>

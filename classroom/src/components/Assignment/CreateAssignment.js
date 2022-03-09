@@ -4,9 +4,10 @@ import ClassroomContext from '../../context/classContext/ClassroomContext'
 import UserAuthContext from "../../context/userContext/UserAuthContext";
 import Navbar from "../main/Navbar";
 import ViewFile from "./ViewFile";
-
 import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+
+
 const CreateAssignment = () => {
 
   const { currentClassroom } = useContext(ClassroomContext)
@@ -17,7 +18,7 @@ const CreateAssignment = () => {
 
   const [assignmentName, setAssignmetName] = useState("")
   const [assignmentDescription, setAssignmetDescription] = useState("")
-  const [assignmentDeadLine, setAssignmetDeadLine] = useState("")
+  const [assignmentDeadLine, setAssignmentDeadLine] = useState("")
 
   const navigate = useNavigate()
 
@@ -26,7 +27,7 @@ const CreateAssignment = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-
+    // console.log(assignmentDeadLine,"++++");
     try {
       // console.log(user.uid)
       // console.log(currentClassroom._id)
@@ -42,7 +43,7 @@ const CreateAssignment = () => {
             assignmentDescription: assignmentDescription,
             UID: user.uid,
             classroomId: currentClassroom._id,
-            deadLine : assignmentDeadLine,
+            deadLine: assignmentDeadLine,
             materials: allMaterials,
           }),
         })
@@ -108,7 +109,7 @@ const CreateAssignment = () => {
 
               <div className="mb-3">
                 <label htmlFor="DeadLine">DeadLine:</label>
-                <input className="m-0" type="datetime-local" id="DeadLine" name="DeadLine" value={assignmentDeadLine} onChange={(event)=>setAssignmetDeadLine(event.target.value)}/>
+                <input className="m-0" type="datetime-local" id="DeadLine" name="DeadLine" value={assignmentDeadLine} onChange={(event) => setAssignmentDeadLine(event.target.value)} />
               </div>
 
               <div className="m-2 ">
