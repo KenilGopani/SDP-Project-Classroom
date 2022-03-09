@@ -35,7 +35,7 @@ const Assignment = () => {
      * 2 - uploaded
      */
     const [uploadState, setUploadState] = useState(0);
-    
+
     function getDifference(array1, array2) {
         return array1.filter(object1 => {
             return !array2.some(object2 => {
@@ -221,10 +221,13 @@ const Assignment = () => {
                     <div className='row m-0'>
                         <Link to={'/home/classroom'} className='col-2 my-auto  fa fa-arrow-left' style={{ fontSize: '30px', color: 'black' }} />
                         <h1 className='col-7 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
-                        {currentClassroom.owner.UID == user.uid &&
+                        {currentClassroom.owner.UID === user.uid &&
                             (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
-                        {/* <p>Dead Line::-  {new Date((assignment?.deadLine)).getDate()} / {new Date((assignment?.deadLine)).getMonth()+1} / {new Date((assignment?.deadLine)).getFullYear()}</p> */}
-                        <p className='font-monospace'>Dead Line :-  {(+assignmentDeadLine != +(new Date("0"))) && (assignmentDeadLine).getDate()} / {(assignmentDeadLine).getMonth() + 1} / {(assignmentDeadLine).getFullYear()}</p>
+                        <p>
+                            {(
+                                (+assignmentDeadLine !== +(new Date("2000-01-01"))) ? (((assignmentDeadLine).getDate()).toString() + " / " + ((assignmentDeadLine).getMonth() + 1).toString() + " / " + ((assignmentDeadLine).getFullYear()).toString()) : "No Due Date."
+                            )}
+                        </p>
                     </div>
                     <hr />
                     <h4 className="text-uppercase fs-5" style={{ fontWeight: '900' }}>Description : </h4>
