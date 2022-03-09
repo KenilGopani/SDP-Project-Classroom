@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams,Link } from 'react-router-dom'
+import { useParams, Link, useNavigate} from 'react-router-dom'
 import AdminNavbar from './AdminNavbar'
 
 const ViewUser = () => {
@@ -8,7 +8,7 @@ const ViewUser = () => {
     const [user, setUser] = useState({});
     const [createdClassrooms, setCreatedClassrooms] = useState([]);
     const [joinedClassrooms, setJoinedClassrooms] = useState([]);
-
+    const navigate = useNavigate()
 
     const fetchUser = async () => {
         try {
@@ -46,21 +46,21 @@ const ViewUser = () => {
         }
     }
     useEffect(() => {
-        fetchUser();
+        (user != null) ? fetchUser() : navigate('/')
     }, [])
 
-    const deleteHandler = async(id) => {
+    const deleteHandler = async (id) => {
         try {
-            let response = await fetch('http://localhost:4099/api/admin/deleteClassroom', 
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    id : id,
-                }),
-            });
+            let response = await fetch('http://localhost:4099/api/admin/deleteClassroom',
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id: id,
+                    }),
+                });
             console.log(response.json().res);
             fetchUser();
         }
@@ -120,19 +120,19 @@ const ViewUser = () => {
                     </thead>
                     <tbody>
                         {createdClassrooms?.length === 0 && (
-                            <div>
+                            <>
                                 <span>No Classroom</span>
-                            </div>
+                            </>
                         )}
                         {createdClassrooms?.length > 0 && createdClassrooms.map(c => {
                             return (
                                 <tr key={c?._id}>
-                                    
+
                                     <th scope="row">{ }</th>
                                     <td>{c?._id}</td>
                                     <td>{c?.className}</td>
                                     <td>{c.members?.length}</td>
-                                    <td><button onClick={()=>deleteHandler(c._id)}><i style={{ fontSize: "24px" }} className="fa fa-tra\sh" /></button></td>
+                                    <td><button onClick={() => deleteHandler(c._id)}><i style={{ fontSize: "24px" }} className="fa fa-tra\sh" /></button></td>
                                 </tr>
                             );
                         })}

@@ -95,7 +95,8 @@ const Assignment = () => {
     }
 
     useEffect(() => {
-        fetchAssignment();
+        (user != null) ? fetchAssignment() : navigate('/')
+
     }, []);
 
     const pieData = {
@@ -214,96 +215,100 @@ const Assignment = () => {
 
     return (
         <>
-            <MailModal mailTo={currentSelectedMail} />
-            <Navbar />
-            <div className='container mt-3 w-75'>
-                <div className='p-3'>
-                    <div className='row m-0'>
-                        <Link to={'/home/classroom'} className='col-2 my-auto  fa fa-arrow-left' style={{ fontSize: '30px', color: 'black' }} />
-                        <h1 className='col-7 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
-                        {currentClassroom.owner.UID === user.uid &&
-                            (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
-                        <p>
-                            {(
-                                (+assignmentDeadLine !== +(new Date("2000-01-01"))) ? (((assignmentDeadLine).getDate()).toString() + " / " + ((assignmentDeadLine).getMonth() + 1).toString() + " / " + ((assignmentDeadLine).getFullYear()).toString()) : "No Due Date."
-                            )}
-                        </p>
-                    </div>
-                    <hr />
-                    <h4 className="text-uppercase fs-5" style={{ fontWeight: '900' }}>Description : </h4>
-                    <div className='row m-0 p-3 overflow-auto fs-5' style={{ maxHeight: '250px', fontWeight: '500' }}>
-                        {assignment && assignment.assignmentDescription}
-                    </div>
-                    <hr className='mx-0' />
-                    <div className="d-flex">
-                        {assignment && assignment.materials.map((material) => <ViewFile key={material.materialLink} subName={material.materialName} subLink={material.materialLink} />)}
-                    </div>
-                    <hr className='mx-0' />
-
-                    {currentClassroom.owner.UID != user.uid && <div className="row">
-                        <form onSubmit={submitHandler} className="row">
-                            <h5 htmlFor="formFile" className="form-label col-12">Submit Here : </h5>
-                            <input className="form-control w-50 col-6" type="file" id="formFile" />
-                            <span className='mx-1 col-2 w-auto' data-toggle="tooltip" data-html="true" title={tipTitle}>
-                                <button className='btn btn-primary' type='submit' disabled={uploadState === 2 ? true : false} ><i className="fa fa-upload" /></button>
-                            </span>
-                            <span className='mx-1 col-2 w-auto' data-toggle="tooltip" data-html="true" title="Cancel submission">
-                                <button className='btn btn-primary' ><i className="fa fa-close" /></button>
-                            </span>
-                            {/* <a className='btn btn-secondary mx-1 col-2' hidden={uploadState !== 2 ? true : false} href={assignmentUrl} target='_blank'><i className='fas fa-file-alt' />&nbsp; View</a> */}
-                            <span className="col-2 border-0" hidden={uploadState === 1 ? false : true}>
-                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                &nbsp; {progress}%
-                            </span>
-                        </form>
-                        <div className='col-2' hidden={uploadState !== 2 ? true : false}><ViewFile subName={submissionFileName} subLink={assignmentUrl} /></div>
-                    </div>}
-                    {currentClassroom.owner.UID == user.uid && <div className='row mt-3'>
-                        {/* <Pie data={pieData} /> */}
-                        <PieChart submittedUsersLength={submittedUsers.length} notSubmittedUsersLength={notSubmittedUsers.length} />
-                    </div>}
-                    {currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
-                        <div className="card p-0">
-                            <div className="card-header" id="headingOne">
-                                <h2 className="mb-0">
-                                    <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1" >Submission Status</a>
-                                </h2>
+            {((user == null) ? navigate('/') :
+                <>
+                    <MailModal mailTo={currentSelectedMail} />
+                    <Navbar />
+                    <div className='container mt-3 w-75'>
+                        <div className='p-3'>
+                            <div className='row m-0'>
+                                <Link to={'/home/classroom'} className='col-2 my-auto  fa fa-arrow-left' style={{ fontSize: '30px', color: 'black' }} />
+                                <h1 className='col-7 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
+                                {currentClassroom.owner.UID === user.uid &&
+                                    (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
+                                <p>
+                                    {(
+                                        (+assignmentDeadLine !== +(new Date("2000-01-01"))) ? (((assignmentDeadLine).getDate()).toString() + " / " + ((assignmentDeadLine).getMonth() + 1).toString() + " / " + ((assignmentDeadLine).getFullYear()).toString()) : "No Due Date."
+                                    )}
+                                </p>
                             </div>
-                            <div className="collapse multi-collapse" id="multiCollapseExample1">
-                                <div className="card card-body">
-                                    <div className='row'>
-                                        <ul className='list-group'>
-                                            <h4 className="list-group-item list-group-item-dark"><em>Submitted List : {submittedUsers.length} / {submittedUsers.length + notSubmittedUsers.length}</em></h4>
-                                            {submittedUsers.map(sUser => (
-                                                <li className='list-group-item row m-0 p-0' key={sUser.user._id}>
-                                                    <p className='col-8 d-inline-block' >{sUser.user.name}</p>
-                                                    <a href={sUser.submissionLink} className="fa fa-file-text col-2 link-secondary" style={{ fontSize: '24px' }} target='_blank' />
-                                                    <i className="fa fa-envelope col-2 link-secondary" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={() => setCurrentSelectedMail(sUser.user.email)} />
-                                                </li>
-                                            ))}
-                                        </ul>
+                            <hr />
+                            <h4 className="text-uppercase fs-5" style={{ fontWeight: '900' }}>Description : </h4>
+                            <div className='row m-0 p-3 overflow-auto fs-5' style={{ maxHeight: '250px', fontWeight: '500' }}>
+                                {assignment && assignment.assignmentDescription}
+                            </div>
+                            <hr className='mx-0' />
+                            <div className="d-flex">
+                                {assignment && assignment.materials.map((material) => <ViewFile key={material.materialLink} subName={material.materialName} subLink={material.materialLink} />)}
+                            </div>
+                            <hr className='mx-0' />
+
+                            {currentClassroom.owner.UID != user.uid && <div className="row">
+                                <form onSubmit={submitHandler} className="row">
+                                    <h5 htmlFor="formFile" className="form-label col-12">Submit Here : </h5>
+                                    <input className="form-control w-50 col-6" type="file" id="formFile" />
+                                    <span className='mx-1 col-2 w-auto' data-toggle="tooltip" data-html="true" title={tipTitle}>
+                                        <button className='btn btn-primary' type='submit' disabled={uploadState === 2 ? true : false} ><i className="fa fa-upload" /></button>
+                                    </span>
+                                    <span className='mx-1 col-2 w-auto' data-toggle="tooltip" data-html="true" title="Cancel submission">
+                                        <button className='btn btn-primary' ><i className="fa fa-close" /></button>
+                                    </span>
+                                    {/* <a className='btn btn-secondary mx-1 col-2' hidden={uploadState !== 2 ? true : false} href={assignmentUrl} target='_blank'><i className='fas fa-file-alt' />&nbsp; View</a> */}
+                                    <span className="col-2 border-0" hidden={uploadState === 1 ? false : true}>
+                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        &nbsp; {progress}%
+                                    </span>
+                                </form>
+                                <div className='col-2' hidden={uploadState !== 2 ? true : false}><ViewFile subName={submissionFileName} subLink={assignmentUrl} /></div>
+                            </div>}
+                            {currentClassroom.owner.UID == user.uid && <div className='row mt-3'>
+                                {/* <Pie data={pieData} /> */}
+                                <PieChart submittedUsersLength={submittedUsers.length} notSubmittedUsersLength={notSubmittedUsers.length} />
+                            </div>}
+                            {currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
+                                <div className="card p-0">
+                                    <div className="card-header" id="headingOne">
+                                        <h2 className="mb-0">
+                                            <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1" >Submission Status</a>
+                                        </h2>
                                     </div>
-                                    <br />
-                                    <div className='row'>
-                                        <ul className='list-group'>
-                                            <div className='row m-0 p-0 list-group-item list-group-item-dark'>
-                                                <h4 className='col-10 d-inline-block'><em>Pending List : {notSubmittedUsers.length} / {notSubmittedUsers.length + submittedUsers.length}</em></h4>
-                                                <button className='btn btn-primary col-2 w-auto my-1' onClick={reminderHandler}>Reminder</button>
+                                    <div className="collapse multi-collapse" id="multiCollapseExample1">
+                                        <div className="card card-body">
+                                            <div className='row'>
+                                                <ul className='list-group'>
+                                                    <h4 className="list-group-item list-group-item-dark"><em>Submitted List : {submittedUsers.length} / {submittedUsers.length + notSubmittedUsers.length}</em></h4>
+                                                    {submittedUsers.map(sUser => (
+                                                        <li className='list-group-item row m-0 p-0' key={sUser.user._id}>
+                                                            <p className='col-8 d-inline-block' >{sUser.user.name}</p>
+                                                            <a href={sUser.submissionLink} className="fa fa-file-text col-2 link-secondary" style={{ fontSize: '24px' }} target='_blank' />
+                                                            <i className="fa fa-envelope col-2 link-secondary" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={() => setCurrentSelectedMail(sUser.user.email)} />
+                                                        </li>
+                                                    ))}
+                                                </ul>
                                             </div>
-                                            {notSubmittedUsers.map(nUser => (
-                                                <li className='list-group-item row m-0 p-0' key={nUser._id}>
-                                                    <p className='col-10 d-inline-block' >{nUser.name}</p>
-                                                    <i className="fa fa-envelope link-secondary col-2" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={() => setCurrentSelectedMail(nUser.user.email)} />
-                                                </li>
-                                            ))}
-                                        </ul>
+                                            <br />
+                                            <div className='row'>
+                                                <ul className='list-group'>
+                                                    <div className='row m-0 p-0 list-group-item list-group-item-dark'>
+                                                        <h4 className='col-10 d-inline-block'><em>Pending List : {notSubmittedUsers.length} / {notSubmittedUsers.length + submittedUsers.length}</em></h4>
+                                                        <button className='btn btn-primary col-2 w-auto my-1' onClick={reminderHandler}>Reminder</button>
+                                                    </div>
+                                                    {notSubmittedUsers.map(nUser => (
+                                                        <li className='list-group-item row m-0 p-0' key={nUser._id}>
+                                                            <p className='col-10 d-inline-block' >{nUser.name}</p>
+                                                            <i className="fa fa-envelope link-secondary col-2" data-bs-toggle="modal" data-bs-target="#mail" style={{ fontSize: '24px' }} onClick={() => setCurrentSelectedMail(nUser.user.email)} />
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>}
                         </div>
-                    </div>}
-                </div>
-            </div>
+                    </div>
+                </>
+            )}
         </>
     )
 }
