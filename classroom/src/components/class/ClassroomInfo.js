@@ -107,7 +107,6 @@ const ClassroomInfo = (props) => {
         document.getElementById('cDesc').value = classDescription;
         document.getElementById('saveCancelDiv').style.display = 'none';
     }
-
     return (
         <div className='container p-2' style={{ overflowY: 'auto', maxHeight: '88vh' }}>
             <div className='row p-0 m-0'>
@@ -166,7 +165,7 @@ const ClassroomInfo = (props) => {
                 {console.log(user.uid)} 
                 {console.log("class ow")}
                 {console.log(currentClassroom.owner.UID)} */}
-                {user.uid === currentClassroom.owner.UID && <div className='row p-2 m-0'>
+                {user && user.uid === currentClassroom.owner.UID && <div className='row p-2 m-0'>
                     <button className="btn btn-secondary w-auto mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         Send Invitation
                     </button>

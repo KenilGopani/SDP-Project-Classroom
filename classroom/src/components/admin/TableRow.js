@@ -30,7 +30,7 @@ export default function TableRow({ user, index }) {
             <td>{user?.email}</td>
             <td className='container d-flex justify-content-center'>
                 <Link to={`/admin/viewuser/${user._id}`}><i style={{fontSize:"24px"}} className="fa">&#xf06e;</i></Link>
-                <i className='fa fa-trash m-1' onClick={()=>deleteHandler(user._id)} />
+                {/* <i className='fa fa-trash m-1' onClick={()=>deleteHandler(user._id)} /> */}
             </td>
         </tr>
     )

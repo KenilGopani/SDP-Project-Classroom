@@ -36,6 +36,7 @@ export default function JoinClass() {
       // console.log(response)
       // console.log(response.classroom)
       setCurrentClassroom(response.classroom)
+      var classId = response.classroom;
     }
     catch (err) {
       console.log(err);
@@ -43,7 +44,7 @@ export default function JoinClass() {
 
     setclassroomCode(event.target.value);
     closeBtnRef.current.click();
-    navigate('/home/classroom')
+    navigate(`/home/classroom/${classId}`)
   }
 
   return (

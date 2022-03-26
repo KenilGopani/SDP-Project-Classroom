@@ -132,7 +132,7 @@ const ViewUser = () => {
                                     <td>{c?._id}</td>
                                     <td>{c?.className}</td>
                                     <td>{c.members?.length}</td>
-                                    <td><button onClick={() => deleteHandler(c._id)}><i style={{ fontSize: "24px" }} className="fa fa-tra\sh" /></button></td>
+                                    <td><button onClick={() => deleteHandler(c._id)}><i className="fa fa-trash" style={{ fontSize: "24px" }} /></button></td>
                                 </tr>
                             );
                         })}
@@ -169,7 +169,7 @@ const ViewUser = () => {
                                     <td>{c?._id}</td>
                                     <td>{c?.className}</td>
                                     <td>{c?.members.length}</td>
-                                    <td><Link to={``}><i style={{ fontSize: "24px" }} className="fa">&#xf06e;</i></Link></td>
+                                    <td><Link to={``}><i style={{ fontSize: "24px" }} className="fa fa-trash" /></Link></td>
                                 </tr>
                             );
                         })}

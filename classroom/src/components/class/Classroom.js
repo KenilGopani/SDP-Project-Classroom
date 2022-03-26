@@ -2,15 +2,20 @@ import React, { useContext, useState, useEffect } from 'react'
 import Navbar from '../main/Navbar'
 import ClassroomInfo from './ClassroomInfo'
 import AssignmentItem from '../assignment/AssignmentItem'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams,useLocation } from 'react-router-dom'
 import ClassroomContext from '../../context/classContext/ClassroomContext'
 import UserAuthContext from '../../context/userContext/UserAuthContext'
 
-const Classroom = () => {
-  const [assignments, setAssignments] = useState({})
-  const { currentClassroom } = useContext(ClassroomContext)
+const Classroom = (props) => {
+  const {classId} = useParams();
+
+  const { currentClassroom,setCurrentClassroom } = useContext(ClassroomContext);
   const { user } = useContext(UserAuthContext);
-  const navigate = useNavigate()
+  const [assignments, setAssignments] = useState({})
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.pathname);
   const fetchAllAssignment = async () => {
     try {
       let response = await fetch('http://localhost:4099/api/assignment/fetchAllAssignment', {
@@ -29,18 +34,43 @@ const Classroom = () => {
     }
   }
 
-  useEffect(() => {
-    (user != null) ? fetchAllAssignment() : navigate('/')
-    // eslint-disable-next-line
+  const fetchClassroom = async () => {
+    if(currentClassroom == null)
+    {
+      try {
+        fetch(`http://localhost:4099/api/classroom/${classId}`, {
+          method: 'GET',
+        }).then(async(res) => {
+          res.json().then((response)=>{
+            console.log(response)
+            setCurrentClassroom(response.classroom);
+          });
+          
+        })
+      }
+      catch (err) {
+        console.log(err)
+      } 
+    }
+  }
 
-  }, [])
+  useEffect(() => {
+    if(currentClassroom == null)
+      fetchClassroom();
+  },[])
+  useEffect(() => {
+    // (user != null) ? fetchAllAssignment() : navigate('/')
+    if(currentClassroom != null)
+      fetchAllAssignment();
+    // eslint-disable-next-line
+  }, [currentClassroom])
 
 
   return (
     <>
-      {((user == null) ? navigate('/') :
-
-        <div className='overflow-hidden' style={{ maxHeight: '100vh' }}>
+      {/* {((user == null) ? navigate('/') : */}
+      { currentClassroom &&
+        (<div className='overflow-hidden' style={{ maxHeight: '100vh' }}>
           <Navbar />
           <div className="container-fluid overflow-hidden p-0" >
             <div className='row h-100 m-2'>
@@ -62,17 +92,19 @@ const Classroom = () => {
                   }
                   )}
                 </ul>
-                {user.uid === currentClassroom.owner.UID && (
-                  <Link to={'/home/classroom/assignment'} className=" position-fixed bottom-0 end-0 mb-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Add assignment">
-                    <img src={require("../../static/add.png")} className="h-25 w-25" /></Link>)}
+                {user !==null && user.uid === currentClassroom.owner.UID && (
+                  <Link to={`${location.pathname}/createAss`} className=" position-fixed bottom-0 end-0 mb-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Add assignment">
+                    <img src={require("../../static/add.png")} className="h-25 w-25" />
+                    {/* <i className="fa fa-plus mr-5" style={{fontSize:'48px',color:'blue'}} /> */}
+                  </Link>)}
               </div>
               {/* <div className='col-4 h-100 p-0'>
             <textarea className='h-100 w-100' />
           </div> */}
             </div>
           </div>
-        </div>
-      )}
+        </div>)}
+      {/* )} */}
     </>
   )
 }

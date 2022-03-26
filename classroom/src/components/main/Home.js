@@ -14,6 +14,8 @@ export default function Home() {
 
     const fetchAllGroups = async () => {
         try {
+            if(user == null)
+                return;
             let response = await fetch('http://localhost:4099/api/classroom/fetchAllClassrooms',
                 {
                     method: 'GET',
@@ -30,15 +32,17 @@ export default function Home() {
         }
     }
     useEffect(() => {
+        if(user?.email === "klassroom0246@gmail.com")
+            navigate('/admin')
         fetchAllGroups();
         // console.log(classrooms)
         // eslint-disable-next-line
-    }, []);
+    }, [user]);
 
     const handleOnClick = (classroom) => {
         setCurrentClassroom(classroom)
         // console.log(classroom)
-        navigate('/home/classroom');
+        navigate(`/home/classroom/${classroom._id}`);
     }
 
     return (

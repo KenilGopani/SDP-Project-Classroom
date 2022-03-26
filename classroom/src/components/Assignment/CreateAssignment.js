@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import ClassroomContext from '../../context/classContext/ClassroomContext'
 import UserAuthContext from "../../context/userContext/UserAuthContext";
 import Navbar from "../main/Navbar";
@@ -20,7 +20,9 @@ const CreateAssignment = () => {
   const [assignmentDescription, setAssignmetDescription] = useState("")
   const [assignmentDeadLine, setAssignmentDeadLine] = useState("")
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const backLink = location.pathname.substring(0,location.pathname.lastIndexOf('/'));
 
   const [allMaterials, setAllMaterials] = useState([]);
   const [currentFile, setCurrentFile] = useState(null);
@@ -48,8 +50,9 @@ const CreateAssignment = () => {
           }),
         })
       response = await response.json()
+      // alert('Assignment created');
       // console.log(response)
-      navigate('/home/classroom')
+      navigate(backLink);
     }
     catch (err) {
       console.log(err);
@@ -96,7 +99,7 @@ const CreateAssignment = () => {
             <form onSubmit={onSubmitHandler}>
               <div className="mb-3">
                 <label className="form-label required">Title</label>
-                <input type="text" className="form-control" name="title" value={assignmentName} onChange={(event) => setAssignmetName(event.target.value)} />
+                <input type="text" className="form-control" name="title" value={assignmentName} onChange={(event) => setAssignmetName(event.target.value)} required/>
               </div>
               <div className="mb-3">
                 <label className="form-label required">Description</label>
@@ -109,7 +112,7 @@ const CreateAssignment = () => {
 
               <div className="mb-3">
                 <label htmlFor="DeadLine">DeadLine:</label>
-                <input className="m-0" type="datetime-local" id="DeadLine" name="DeadLine" value={assignmentDeadLine} onChange={(event) => setAssignmentDeadLine(event.target.value)} />
+                <input className="m-0" type="datetime-local" id="DeadLine" name="DeadLine" value={assignmentDeadLine} onChange={(event) => setAssignmentDeadLine(event.target.value)}/>
               </div>
 
               <div className="m-2 ">
@@ -127,7 +130,7 @@ const CreateAssignment = () => {
                 </div>
               </div>
               <button type="submit" className="btn btn-primary">Create</button>
-              <Link to={'/home/classroom'} className="btn btn-danger m-1" >Cancel</Link>
+              <Link to={backLink} className="btn btn-danger m-1" >Cancel</Link>
             </form>
           </div>
         </div>

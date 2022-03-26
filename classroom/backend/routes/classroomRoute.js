@@ -98,6 +98,21 @@ router.get('/fetchAllClassrooms', async (req, res) => {
 
 })
 
+router.get('/:id', async (req, res) => {
+
+    try {
+        // console.log(classroomIds)
+        let classroom = await Classroom.findOne({ _id: req.params.id }).populate({path : 'owner', select : 'UID name email'}).populate({path : 'members', select : 'UID name email'})
+        // console.log(classrooms)
+        res.json({ success: true, classroom });
+    }
+    catch (error) {
+        // console(error)
+        res.status(500).send("Internal Server Error");
+    }
+
+})
+
 router.put('/sendMail', async (req, res) => {
     try{
         let msg = `Hello FOLKS! <br><br>Here is your classroom code <b>${req.body.classCode}</b> for <b>${req.body.className}</b>. <br><br>Thanks,<br>KlassRoom Team.<br>`

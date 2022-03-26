@@ -72,6 +72,7 @@ const CreateClass = () => {
                 className="form-control"
                 value={className}
                 onChange={(event) => setclassName(event.target.value)}
+                required
               />
             </div>
             <div className="form-group m-4">
@@ -87,7 +88,6 @@ const CreateClass = () => {
             <div className=" form-group m-4 ">
               <button className="btn btn-primary" type="submit">Create Class</button>
             </div>
-
           </form>
         </div>
       </div>

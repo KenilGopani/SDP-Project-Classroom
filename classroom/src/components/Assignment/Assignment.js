@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import Navbar from '../main/Navbar'
@@ -19,16 +19,20 @@ const Assignment = () => {
     const [assignmentDeadLine, setAssignmentDeadLine] = useState(new Date("0"));
 
     const { id } = useParams();
-    const [assignment, setAssignment] = useState(undefined);
+    const [assignment, setAssignment] = useState(null);
     const [progress, setProgress] = useState(0);
-    const navigate = useNavigate()
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    let backLink = location.pathname.substring(0,location.pathname.lastIndexOf('/'));
+    backLink = backLink.substring(0,backLink.lastIndexOf('/'));
 
     // const [allUser, setAllUser] = useState(currentClassroom.members);
     const [submittedUsers, setSubmittedUsers] = useState([]);
     const [notSubmittedUsers, setNotSubmittedUsers] = useState([]);
 
     const [currentSelectedMail, setCurrentSelectedMail] = useState('');
-
+    
     /**
      * 0 - not uploaded
      * 1 - uploading
@@ -68,7 +72,7 @@ const Assignment = () => {
             })
             response = await response.json();
             // console.log(response.assignment);
-            const submission = response.assignment.submissions.find(submission => { return submission.userId.UID === user.uid ? submission : null; });
+            const submission = response.assignment.submissions.find(submission => { return submission.userId.UID === user?.uid ? submission : null; });
             // console.log(submission);
             if (submission) {
                 setAssignmentUrl(submission.SubmissionLink);
@@ -84,7 +88,7 @@ const Assignment = () => {
                 return { user: submission.userId, submissionLink: submission.SubmissionLink }
             });
             setSubmittedUsers(doneUser);
-            const notDoneUser = getDifference(currentClassroom.members, doneUser);
+            const notDoneUser = getDifference(currentClassroom?.members, doneUser);
             setNotSubmittedUsers(notDoneUser);
             // console.log(allUser)
             // console.log(doneUser);
@@ -95,9 +99,10 @@ const Assignment = () => {
     }
 
     useEffect(() => {
-        (user != null) ? fetchAssignment() : navigate('/')
-
-    }, []);
+        // (user != null) ? fetchAssignment() : navigate('/')
+        if(!currentClassroom || !user || !assignment)
+            fetchAssignment();
+    }, [user,currentClassroom]);
 
     const pieData = {
         labels: ['Submitted', 'Not Submitted'],
@@ -206,7 +211,9 @@ const Assignment = () => {
                     }),
                 })
             // console.log(res.json())
-            navigate('/home/classroom')
+            navigate(backLink)
+            // alert('Assignement deleted')
+            
         }
         catch (err) {
             console.log(err)
@@ -215,16 +222,16 @@ const Assignment = () => {
 
     return (
         <>
-            {((user == null) ? navigate('/') :
+            {/* {assignment &&  */}
                 <>
                     <MailModal mailTo={currentSelectedMail} />
                     <Navbar />
                     <div className='container mt-3 w-75'>
                         <div className='p-3'>
                             <div className='row m-0'>
-                                <Link to={'/home/classroom'} className='col-2 my-auto  fa fa-arrow-left' style={{ fontSize: '30px', color: 'black' }} />
+                                <Link to={backLink} className='col-2 my-auto  fa fa-arrow-left' style={{ fontSize: '30px', color: 'black' }} />
                                 <h1 className='col-7 m-0 p-0 text-secondary text-center fw-bold'><i className="fas fa-file-alt col-2 m-auto" style={{ fontSize: '50px' }} />{assignment && assignment.assignmentName} </h1>
-                                {currentClassroom.owner.UID === user.uid &&
+                                {currentClassroom?.owner?.UID === user?.uid &&
                                     (<i className="col-1 my-auto fa fa-trash" style={{ fontSize: "24px" }} onClick={handleDeleteAssignment}></i>)}
                                 <p>
                                     {(
@@ -243,7 +250,7 @@ const Assignment = () => {
                             </div>
                             <hr className='mx-0' />
 
-                            {currentClassroom.owner.UID != user.uid && <div className="row">
+                            { currentClassroom?.owner?.UID != user?.uid && <div className="row">
                                 <form onSubmit={submitHandler} className="row">
                                     <h5 htmlFor="formFile" className="form-label col-12">Submit Here : </h5>
                                     <input className="form-control w-50 col-6" type="file" id="formFile" />
@@ -261,11 +268,11 @@ const Assignment = () => {
                                 </form>
                                 <div className='col-2' hidden={uploadState !== 2 ? true : false}><ViewFile subName={submissionFileName} subLink={assignmentUrl} /></div>
                             </div>}
-                            {currentClassroom.owner.UID == user.uid && <div className='row mt-3'>
+                            {currentClassroom && user && currentClassroom.owner.UID == user.uid && <div className='row mt-3'>
                                 {/* <Pie data={pieData} /> */}
                                 <PieChart submittedUsersLength={submittedUsers.length} notSubmittedUsersLength={notSubmittedUsers.length} />
                             </div>}
-                            {currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
+                            {currentClassroom && user && currentClassroom.owner.UID == user.uid && <div className="row mt-3 ">
                                 <div className="card p-0">
                                     <div className="card-header" id="headingOne">
                                         <h2 className="mb-0">
@@ -308,7 +315,7 @@ const Assignment = () => {
                         </div>
                     </div>
                 </>
-            )}
+            {/* }  */}
         </>
     )
 }

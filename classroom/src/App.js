@@ -25,9 +25,9 @@ function App() {
           {/* <Route path="/home" element = {<ProtectedRoutes><Home/></ProtectedRoutes>}/> */}
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/home" element={<Home />} />
-          <Route exact path="/home/classroom" element={<Classroom />} />
-          <Route exact path="/home/classroom/assignment" element={<CreateAssignment/>} />
-          <Route exact path="/home/classroom/viewassignment/:id" element={<Assignment />} />
+          <Route exact path="/home/classroom/:classId" element={<Classroom />} />
+          <Route exact path="/home/classroom/:classId/createAss" element={<CreateAssignment/>} />
+          <Route exact path="/home/classroom/:classId/viewassignment/:id" element={<Assignment />} />
           <Route exact path="/createClass" element={<CreateClass />} />
           <Route exact path="/joinClass" element={<JoinClass />} />
           <Route exact path="/admin" element={<Admin />} />
