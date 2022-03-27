@@ -10,8 +10,8 @@ import CreateClass from './components/class/CreateClass';
 import JoinClass from './components/class/JoinClass';
 import UserAuthProvider from "./context/userContext/UserAuthProvider";
 import ClassroomProvider from './context/classContext/ClassroomProvider'
-import CreateAssignment from './components/assignment/CreateAssignment';
-import Assignment from './components/assignment/Assignment';
+import CreateAssignment from './components/userAssignment/CreateAssignment';
+import Assignment from './components/userAssignment/Assignment';
 import Admin from './components/admin/Admin';
 import ViewUser from './components/admin/ViewUser';
 
