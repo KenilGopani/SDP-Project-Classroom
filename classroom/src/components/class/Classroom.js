@@ -15,7 +15,6 @@ const Classroom = (props) => {
   
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
   const fetchAllAssignment = async () => {
     try {
       let response = await fetch('http://localhost:4099/api/assignment/fetchAllAssignment', {
@@ -42,7 +41,7 @@ const Classroom = (props) => {
           method: 'GET',
         }).then(async(res) => {
           res.json().then((response)=>{
-            console.log(response)
+            // console.log(response)
             setCurrentClassroom(response.classroom);
           });
           

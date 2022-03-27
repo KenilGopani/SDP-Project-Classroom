@@ -71,19 +71,10 @@ const Profile = () => {
                                     <hr />
                                     <div className={"row"}>
                                         <div className={"col-sm-3"}>
-                                            <h6 className={"mb-0"}>Phone</h6>
-                                        </div>
-                                        <div className={"col-sm-9 text-secondary"}>
-                                            (239) 816-9029
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div className={"row"}>
-                                        <div className={"col-sm-3"}>
                                             <h6 className={"mb-0"}>Mobile</h6>
                                         </div>
                                         <div className={"col-sm-9 text-secondary"}>
-                                            (320) 380-4539
+                                            -
                                         </div>
                                     </div>
                                     <hr />
@@ -92,13 +83,13 @@ const Profile = () => {
                                             <h6 className={"mb-0"}>Address</h6>
                                         </div>
                                         <div className={"col-sm-9 text-secondary"}>
-                                            Bay Area, San Francisco, CA
+                                            -
                                         </div>
                                     </div>
                                     <hr />
                                     <div className={"row"}>
                                         <div className={"col-sm-12"}>
-                                            <button className={"btn btn-info"} >Edit</button>
+                                            {/* <button className={"btn btn-info"} >Edit</button> */}
                                         </div>
                                     </div>
                                 </div>

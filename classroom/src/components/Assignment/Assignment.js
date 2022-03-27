@@ -129,6 +129,7 @@ const Assignment = () => {
     const uploadFile = async (file) => {
         if (!file) {
             setUploadState(0);
+            console.log('hello');
             return;
         }
         const fileName = new Date().getTime() + file.name;

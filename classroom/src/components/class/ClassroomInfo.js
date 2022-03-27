@@ -121,14 +121,14 @@ const ClassroomInfo = (props) => {
                     <input className='col-7 m-auto w-75 form-control ' id='cName' onChange={(event) => {
                         setClassName(event.target.value);
                     }} readOnly={true} value={className} style={{ background: 'transparent' }} />
-                    <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
+                    {user && user.uid === currentClassroom.owner.UID && <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
                         document.getElementById('saveCancelDiv').style.display = 'block';
                         const cName = document.getElementById('cName');
                         document.getElementById('close').style.display = 'block';
                         document.getElementById('save').style.display = 'block';
                         cName.readOnly = false;
                         cName.focus();
-                    }} />
+                    }} />}
                 </div>
                 <hr className='mt-3' />
                 <div className='row p-0 m-0 form-group'>
@@ -137,14 +137,14 @@ const ClassroomInfo = (props) => {
                     <textarea className='col-7 fs-5 m-auto fw-normal w-75 form-control' id='cDesc' onChange={(event) => {
                         setClassDescription(event.target.value)
                     }} readOnly={true} value={classDescription} style={{ height: '120px', background: 'transparent' }} />
-                    <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
+                    {user && user.uid === currentClassroom.owner.UID && <i className="fa fa-edit col-1 m-auto" style={{ fontSize: '24px' }} onClick={() => {
                         document.getElementById('saveCancelDiv').style.display = 'block';
                         const cDesc = document.getElementById('cDesc');
                         document.getElementById('close').style.display = 'block';
                         document.getElementById('save').style.display = 'block';
                         cDesc.readOnly = false;
                         cDesc.focus();
-                    }} />
+                    }} />}
                 </div>
                 <div className='row form-group' id="saveCancelDiv" style={{ display: 'none' }}>
                     <div className='col-12 d-flex justify-content-end mt-2' >
@@ -155,11 +155,11 @@ const ClassroomInfo = (props) => {
                 </div>
             </div>
             <hr />
-            <div className='row p-0 m-0'>
+            {user && user.uid === currentClassroom.owner.UID && <><div className='row p-0 m-0'>
                 <label className="col h5 m-auto">Class Code : </label>
                 <p className='col fs-5 m-auto fw-normal'>{currentClassroom.classCode}</p>
             </div>
-            <hr />
+            <hr /></>}
             <div>
                 {/* {console.log("user")}
                 {console.log(user.uid)} 
@@ -174,8 +174,8 @@ const ClassroomInfo = (props) => {
                         {/* <label className="form-label">Send classroom code via mail :</label> */}
                         <div className='d-flex justify-content-between'>
                             <input name="className" type="email" className="w-75" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Enter email..." />
-                            <button className="btn btn-primary w-auto h-auto my-3 mx-1"  type="button" onClick={emailListHandler}>Add</button>
-                            <button className="btn btn-primary w-auto h-auto my-3 mx-1"  type="button" onClick={sendEmailHandler}>Send</button>
+                            <button className="btn btn-primary w-auto h-auto my-3 mx-1" type="button" onClick={emailListHandler}>Add</button>
+                            <button className="btn btn-primary w-auto h-auto my-3 mx-1" type="button" onClick={sendEmailHandler}>Send</button>
                         </div>
                         <div className='d-flex flex-column'>
                             <ul className="list-group overflow-auto p-0" id="emailList" style={{ maxHeight: '200px' }}>

@@ -13,7 +13,7 @@ const AdminHome = () => {
             })
             response = await response.json()
             // console.log(response.Users)
-            setUsers(response.Users)
+            setUsers(response?.Users)
         }
         catch (err) {
             console.log(err)
